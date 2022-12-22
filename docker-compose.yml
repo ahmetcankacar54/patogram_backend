@@ -1,0 +1,16 @@
+version: "3.10"
+services:
+  backend:
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: patogram
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app
