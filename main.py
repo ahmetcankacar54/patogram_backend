@@ -9,17 +9,6 @@ from api import post, user, auth
 
 Base.metadata.create_all(bind=engine)
 
-while True:
-    try:
-        conn = psycopg2.connect(host='localhost', database='fastapi', user='postgres', password='Cerrah54', cursor_factory=RealDictCursor)
-        cursor = conn.cursor()
-        print("Database connection Succesfull!")
-        break
-    except Exception as error:
-        print("Cannot connect the Database!")
-        print("ERROR: ", error)
-        time.sleep(2)
-
 app = FastAPI()
 
 app.include_router(post.router)
