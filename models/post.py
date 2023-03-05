@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Boolean
-from base import BaseModel
+from models import BaseModel
 
 class Post(BaseModel):
     __tablename__ = "posts"
@@ -8,4 +8,4 @@ class Post(BaseModel):
     content = Column(String, nullable=False)
     published = Column(Boolean, server_default='True', nullable=False)
 
-
+ 
