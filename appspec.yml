@@ -2,13 +2,13 @@ version: 0.0
 os: linux
 files:
   - source: .
-    destination: /home/ec2-user/patogram/
+    destination: /home/ec2-user/patogram_backend/
 hooks:
   AfterInstall:
-    - location: setup.sh
+    - location: scripts/setup.sh
       timeout: 300
       runas: root
   ApplicationStart:
-    - location: run.sh
+    - location: scripts/run.sh
       timeout: 300
       runas: root
