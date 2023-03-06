@@ -15,5 +15,5 @@ app.include_router(auth.router)
 
 @app.get("/")
 def root():
-    return {"message": " Sanirim code deploy artik calisiyor!."}
+    return {"message": " Lutfen Duzgun bir sekilde calis artik!."}
 
