@@ -8,8 +8,6 @@ services:
       dockerfile: Dockerfile
     container_name: patogram
     restart: always
-    env_file:
-      - .env
     ports:
       - "80:80"
     volumes:
