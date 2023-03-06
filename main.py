@@ -1,7 +1,4 @@
 from fastapi import FastAPI
-import psycopg2
-from psycopg2.extras import RealDictCursor
-import time
 from models import Base
 from database.configuration import engine
 from api import post, user, auth

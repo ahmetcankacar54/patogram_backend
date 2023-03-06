@@ -7,32 +7,32 @@ from typing import List
 import services
 
 router = APIRouter(
-    prefix="/posts",
-    tags=['Postlar']
+    prefix="/api/post",
+    tags=['Posts']
 )
 
-@router.get("/", response_model= List[Post])
+@router.get("/get", response_model= List[Post])
 async def get_posts(db: Session = Depends(get_db)):
     
     return await services.get_posts(db)
     
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model= Post)
+@router.post("/create", status_code=status.HTTP_201_CREATED, response_model= Post)
 async def create_posts(post: CreatePost, db: Session = Depends(get_db)):
     
     return await services.create_posts(post, db)
 
-@router.get("/{id}", response_model= Post)
+@router.get("/get/{id}", response_model= Post)
 async def get_post(id: int, db: Session = Depends(get_db)):
 
     return await services.get_post(id, db)
 
-@router.delete("/{id}", status_code= status.HTTP_204_NO_CONTENT)
+@router.delete("/delete/{id}", status_code= status.HTTP_204_NO_CONTENT)
 async def delete_post(id: int, db: Session = Depends(get_db)):
 
     return await services.delete_post(id, db)
 
-@router.put("/{id}", response_model= Post)
+@router.put("/update/{id}", response_model= Post)
 async def update_post(id: int, updated_post: CreatePost, db: Session = Depends(get_db)):
     
     return await services.update_post(id, updated_post, db)
