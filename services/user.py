@@ -1,11 +1,11 @@
 from models import User
-from schemas import User,UserBase,CreateUser
+from schemas import CreateUser
 from utils import hashing
 from fastapi import status, HTTPException, Depends
 from database.configuration import  get_db
 from sqlalchemy.orm import Session
 
-async def create_user(user: UserBase, db: Session = Depends(get_db)):  
+async def create_user(user: CreateUser, db: Session = Depends(get_db)):  
 
     hashed_password = hashing.hash(user.password)
     user.password = hashed_password

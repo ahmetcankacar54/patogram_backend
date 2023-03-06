@@ -1,5 +1,5 @@
 from models import Post
-from schemas import Post,CreatePost
+from schemas import CreatePost
 from fastapi import  Response, status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session

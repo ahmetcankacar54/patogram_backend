@@ -9,7 +9,7 @@ class PostBase(BaseModel):
 class CreatePost(PostBase):
     pass
 
-class Post(PostBase):
+class PostOut(PostBase):
     id: int
     created_at: datetime
     

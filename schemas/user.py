@@ -9,7 +9,7 @@ class UserBase(BaseModel):
 class CreateUser(UserBase):
     pass
 
-class User(BaseModel):
+class UserOut(BaseModel):
     id: int
     full_name: str
     email: EmailStr
