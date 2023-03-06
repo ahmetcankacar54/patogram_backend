@@ -15,5 +15,5 @@ app.include_router(auth.router)
 
 @app.get("/")
 def root():
-    return {"message": " Bay Kemal AWS Code Deploy Duzgun Bir Sekilde Calisiyor!."}
+    return {"message": " Vedat Abi AWS Code Deploy Calisiyor :)"}
 
