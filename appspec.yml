@@ -5,10 +5,10 @@ files:
     destination: /home/ec2-user/patogram_backend/
 hooks:
   AfterInstall:
-    - location: scripts/setup.sh
+    - location: setup.sh
       timeout: 300
       runas: root
   ApplicationStart:
-    - location: scripts/run.sh
+    - location: run.sh
       timeout: 300
       runas: root
