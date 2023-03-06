@@ -16,5 +16,7 @@ async def login(request_body: HTTPBasicCredentials = Depends(), db: Session = De
 
 @router.post("/register")
 async def register():
-    return "register form"
+    return {
+        "message": "Success"
+    }
     
