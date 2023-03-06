@@ -39,4 +39,4 @@ jobs:
             --application-name patogramGit \
             --deployment-group-name development_group \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
-            --github-location repository=ahmetcankacar54/patogram_backend,commitId=github.sha
+            --github-location repository=ahmetcankacar54/patogram_backend,commitId=${{ github.sha }}
