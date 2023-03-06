@@ -7,7 +7,7 @@ from utils import hashing
 from security import oauth2
 
 async def login(request: LoginRequest, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == request.username).first()
+    user = db.query(User).filter(User.email == request.email).first()
 
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Credentials!")
