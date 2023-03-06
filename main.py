@@ -15,5 +15,5 @@ app.include_router(auth.router)
 
 @app.get("/")
 def root():
-    return {"message": " Merhaba Sonunda aws uzerinde calisiyoruz!."}
+    return {"message": " AWS ec2 uzerinde canliyiz!."}
 
