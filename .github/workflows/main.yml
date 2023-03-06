@@ -39,4 +39,4 @@ jobs:
             --application-name Git_Application \
             --deployment-group-name development_gropup \
             --deployment-config-name CodeDeployDefault.OneAtATime \
-            --github-location repository=${ahmetcankacar54/patogram_backend},commitId=${f70cd06f897c8026bffc465167757bcb3f4c0871}
+            --github-location repository=ahmetcankacar54/patogram_backend,commitId=f70cd06f897c8026bffc465167757bcb3f4c0871
