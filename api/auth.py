@@ -14,7 +14,7 @@ async def login(request_body: HTTPBasicCredentials = Depends(), db: Session = De
 
     return await services.login(request_body, db) 
 
-@router.post("/register")
+@router.post("/signup")
 async def register():
     return {
         "message": "Success"
