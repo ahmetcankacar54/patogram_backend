@@ -1,13 +1,12 @@
 from models import User
-from fastapi import status, HTTPException, Depends, APIRouter
+from schemas import LoginRequest
+from fastapi import status, HTTPException, Depends
 from sqlalchemy.orm import Session
-from fastapi.security.oauth2 import OAuth2PasswordRequestForm
-from fastapi.security import  HTTPBasicCredentials
-from database.configuration import  get_db
+from database.configuration import get_db
 from utils import hashing
 from security import oauth2
 
-async def login(request: HTTPBasicCredentials = Depends(), db: Session = Depends(get_db)):
+async def login(request: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == request.username).first()
 
     if not user:
