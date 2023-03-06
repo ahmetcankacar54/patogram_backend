@@ -36,7 +36,7 @@ jobs:
         id: deploy
         run: |
           aws deploy create-deployment \
-            --application-name Git_Application \
+            --application-name patogramGit \
             --deployment-group-name development_group \
-            --deployment-config-name CodeDeployDefault.OneAtATime \
-            --github-location repository=ahmetcankacar54/patogram_backend,commitId=f70cd06f897c8026bffc465167757bcb3f4c0871
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --github-location repository=ahmetcankacar54/patogram_backend,commitId=c2cfb4f66cb6f6f8dd3ff21b4b31e250bc1c0961
