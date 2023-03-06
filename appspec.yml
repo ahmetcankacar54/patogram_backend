@@ -5,7 +5,7 @@ files:
     destination: /home/ec2-user/patogram_backend/
 file_exists_behavior: OVERWRITE
 hooks:
-  AfterInstall:
+  Install:
     - location: setup.sh
       timeout: 300
       runas: root
