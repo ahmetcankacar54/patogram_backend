@@ -6,9 +6,6 @@ class UserBase(BaseModel):
     email: EmailStr
     password: str
 
-class CreateUser(UserBase):
-    pass
-
 class UserOut(BaseModel):
     id: int
     full_name: str
@@ -18,6 +15,3 @@ class UserOut(BaseModel):
     class Config:
         orm_mode = True
 
-class UserLogin(BaseModel):
-    email: EmailStr
-    password: str

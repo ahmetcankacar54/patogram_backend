@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
+from schemas.user import UserBase
 
 
 class LoginRequest(BaseModel): 
@@ -13,3 +14,6 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[str] = None
+
+class SignUpRequest(UserBase):
+    pass

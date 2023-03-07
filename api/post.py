@@ -1,4 +1,3 @@
-from models import Post
 from schemas import PostOut, CreatePost
 from fastapi import  status, Depends, APIRouter
 from database.configuration import get_db
