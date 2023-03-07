@@ -1,5 +1,5 @@
 from models import User
-from schemas import LoginRequest, SignUpRequest
+from schemas import LoginRequest, SignUpRequest,SignupResponse,Token
 from fastapi import status, HTTPException, Depends
 from sqlalchemy.orm import Session
 from database.configuration import get_db
@@ -20,7 +20,7 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
 
     return {"access_token": access_token, "token_type": "bearer"}
 
-async def register(user: SignUpRequest, db: Session = Depends(get_db)):  
+async def signup(user: SignUpRequest, db: Session = Depends(get_db)):  
 
     hashed_password = hashing.hash(user.password)
     user.password = hashed_password
@@ -30,4 +30,8 @@ async def register(user: SignUpRequest, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    return new_user
+    access_token = oauth2.create_access_token(data={"user_id": new_user.id})
+    
+    print(access_token)
+
+    return SignupResponse(user=new_user.__dict__,token=access_token)

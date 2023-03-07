@@ -1,17 +1,10 @@
-from pydantic import BaseModel, EmailStr
-from datetime import datetime
+from pydantic import BaseModel, EmailStr,Field
 
 class UserBase(BaseModel):
     full_name: str
     email: EmailStr
     password: str
-
-class UserOut(BaseModel):
-    id: int
-    full_name: str
-    email: EmailStr
-    created_at: datetime
-
-    class Config:
-        orm_mode = True
-
+class UserSchema(BaseModel):
+    id: int = Field(default=None)
+    full_name: str = Field(default=None)
+    email: str = Field(default=None)
