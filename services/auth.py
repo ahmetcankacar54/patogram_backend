@@ -1,5 +1,5 @@
 from models import User
-from schemas import LoginRequest, SignUpRequest,SignupResponse,Token
+from schemas import LoginRequest, SignUpRequest,SignupResponse
 from fastapi import status, HTTPException, Depends
 from sqlalchemy.orm import Session
 from database.configuration import get_db
