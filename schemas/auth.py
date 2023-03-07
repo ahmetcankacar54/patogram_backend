@@ -7,10 +7,6 @@ class LoginRequest(BaseModel):
     email: str
     password: str
 
-class Token(BaseModel):
-    access_token: str = Field(default=None)
-    token_type: str = Field(default=None)
-
 class TokenData(BaseModel):
     id: Optional[str] = None
 
