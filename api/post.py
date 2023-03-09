@@ -4,6 +4,7 @@ from database.configuration import get_db
 from sqlalchemy.orm import Session
 from typing import List
 import services
+from security import oauth2
 
 router = APIRouter(
     prefix="/api/posts",
@@ -17,7 +18,7 @@ async def get_posts(db: Session = Depends(get_db)):
     
 
 @router.post("/create", status_code=status.HTTP_201_CREATED, response_model= PostOut)
-async def create_posts(post: CreatePost, db: Session = Depends(get_db)):
+async def create_posts(post: CreatePost, db: Session = Depends(get_db), user_id: int = Depends(oauth2.get_current_user)):
     
     return await services.create_posts(post, db)
 
