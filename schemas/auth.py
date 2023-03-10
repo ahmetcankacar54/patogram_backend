@@ -14,6 +14,9 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     id: Optional[str] = None
     
+    class Config:
+        orm_mode = True
+    
 
 class SignUpRequest(UserBase):
     pass

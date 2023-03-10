@@ -11,12 +11,11 @@ async def get_posts(db: Session = Depends(get_db)):
     return posts
 
 async def create_posts(post: CreatePost, db: Session = Depends(get_db)):
+    #uuid = TokenData(oauth2.get_current_user)
+    current_user = oauth2.get_current_user()
     print(current_user)
-    print(oauth2.get_current_user)
-    uuid = TokenData(**oauth2.get_current_user.dict())
-    print(uuid)
     
-    new_post = Post(**post.dict(), owner_id= uuid.id)
+    new_post = Post(owner_id= current_user, **post.dict())
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
