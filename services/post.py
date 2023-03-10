@@ -25,8 +25,8 @@ async def get_post(id: int, db: Session = Depends(get_db), current_user: int = D
     return post
 
 async def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    post = db.query(Post).filter(Post.id == id)
-
+    post_querry = db.query(Post).filter(Post.id == id)
+    post = post_querry.first()
 
     if post == None:
         raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail=f"Post with id: {id} not found!")
@@ -34,7 +34,7 @@ async def delete_post(id: int, db: Session = Depends(get_db), current_user: int 
     if post.owner_id != oauth2.get_current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not Authorized for performed request action!")
 
-    post.delete(synchronize_session=False)
+    post_querry.delete(synchronize_session=False)
     db.commit()
 
     return Response(status_code= status.HTTP_204_NO_CONTENT)
