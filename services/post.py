@@ -10,7 +10,7 @@ async def get_posts(db: Session = Depends(get_db), current_user: int = Depends(o
     return posts
 
 async def create_posts(post: CreatePost, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    new_post = Post(owner_id= current_user.id, **post.dict())
+    new_post = Post(**post.dict(), owner_id= current_user.id)
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
