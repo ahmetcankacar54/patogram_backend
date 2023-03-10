@@ -31,7 +31,7 @@ async def delete_post(id: int, db: Session = Depends(get_db), current_user: int 
     if post == None:
         raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail=f"Post with id: {id} not found!")
     
-    if post.owner_id != current_user.id:
+    if post.owner_id != oauth2.get_current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not Authorized for performed request action!")
 
     post.delete(synchronize_session=False)
@@ -46,7 +46,7 @@ async def update_post(id: int, updated_post: CreatePost, db: Session = Depends(g
     if post == None:
         raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail=f"Post with id: {id} not found!")
     
-    if post.owner_id != current_user.id:
+    if post.owner_id != oauth2.get_current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not Authorized for performed request action!")
 
 
