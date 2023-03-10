@@ -13,6 +13,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[str] = None
+    
 
 class SignUpRequest(UserBase):
     pass

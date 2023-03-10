@@ -3,28 +3,34 @@ from schemas import CreatePost
 from fastapi import  Response, status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
+from schemas.auth import TokenData
 from security import oauth2
 
-async def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+async def get_posts(db: Session = Depends(get_db)):
     posts = db.query(Post).all()
     return posts
 
-async def create_posts(post: CreatePost, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    new_post = Post(**post.dict(), owner_id= current_user.id)
+async def create_posts(post: CreatePost, db: Session = Depends(get_db)):
+    print(current_user)
+    print(oauth2.get_current_user)
+    uuid = TokenData(**oauth2.get_current_user.dict())
+    print(uuid)
+    
+    new_post = Post(**post.dict(), owner_id= uuid.id)
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
     
     return new_post
 
-async def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+async def get_post(id: int, db: Session = Depends(get_db)):
     post = db.query(Post).filter(Post.id == id).first()
 
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id: {id} not found!")
     return post
 
-async def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+async def delete_post(id: int, db: Session = Depends(get_db)):
     post_querry = db.query(Post).filter(Post.id == id)
     post = post_querry.first()
 
@@ -39,7 +45,7 @@ async def delete_post(id: int, db: Session = Depends(get_db), current_user: int 
 
     return Response(status_code= status.HTTP_204_NO_CONTENT)
 
-async def update_post(id: int, updated_post: CreatePost, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+async def update_post(id: int, updated_post: CreatePost, db: Session = Depends(get_db)):
     post_querry = db.query(Post).filter(Post.id == id)
     post = post_querry.first()
 
