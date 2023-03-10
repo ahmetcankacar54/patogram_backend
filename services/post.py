@@ -1,21 +1,19 @@
 from models import Post
-from schemas import CreatePost
+from schemas import CreatePost,PostBase
 from fastapi import  Response, status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
-from schemas.auth import TokenData
-from security import oauth2
 
 async def get_posts(db: Session = Depends(get_db)):
     posts = db.query(Post).all()
     return posts
 
-async def create_posts(post: CreatePost, db: Session = Depends(get_db)):
-    #uuid = TokenData(oauth2.get_current_user)
-    current_user = oauth2.get_current_user()
-    print(current_user)
-    
-    new_post = Post(owner_id= current_user, **post.dict())
+async def create_posts(user_id: int,post: PostBase,db: Depends(get_db)):    
+
+    new_post = Post(**post.dict())
+
+    new_post.owner_id = user_id
+
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
@@ -36,8 +34,8 @@ async def delete_post(id: int, db: Session = Depends(get_db)):
     if post == None:
         raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail=f"Post with id: {id} not found!")
     
-    if post.owner_id != current_user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not Authorized for performed request action!")
+    # if post.owner_id != current_user.id:
+    #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not Authorized for performed request action!")
 
     post_querry.delete(synchronize_session=False)
     db.commit()
@@ -51,8 +49,8 @@ async def update_post(id: int, updated_post: CreatePost, db: Session = Depends(g
     if post == None:
         raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail=f"Post with id: {id} not found!")
     
-    if post.owner_id != current_user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not Authorized for performed request action!")
+    # if post.owner_id != current_user.id:
+    #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Not Authorized for performed request action!")
 
 
     post_querry.update(updated_post.dict(), synchronize_session=False)
