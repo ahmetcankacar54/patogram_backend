@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from schemas import TokenData
 from utils import Constants as consts
 from models import User
-from database.configuration import get_db
 from sqlalchemy.orm import Session
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
@@ -14,7 +13,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
 def create_access_token(user):
     payload = {
         "id": user.id,
-        "exp": datetime.utcnow() + timedelta(minutes=consts.ACCESS_TOKEN_EXPIRE_MINUTES)
+        "exp": datetime.utcnow() + timedelta(days=consts.ACCESS_TOKEN_EXPIRE_DAYS)
     }
     token = jwt.encode(payload,consts.SECRET_KEY,algorithm=consts.ALGORITHM)
     return token

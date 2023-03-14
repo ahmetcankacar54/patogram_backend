@@ -15,24 +15,28 @@ router = APIRouter(
 async def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     
     return await services.get_posts(db)
-    
-
-@router.post("/create", status_code=status.HTTP_201_CREATED, response_model= PostOut)
-async def create_posts(post: CreatePost, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    print(current_user.id)
-    return await services.create_posts(current_user.id,post,db)
 
 @router.get("/get/{id}", response_model= PostOut)
 async def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-    return await services.get_post(id, db)
+    return await services.get_post(id, db)   
+
+@router.get("/user/{id}", response_model= List[PostOut])
+async def get_user_posts(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+
+    return await services.get_user_posts(id, db)   
+
+@router.post("/create", status_code=status.HTTP_201_CREATED, response_model= PostOut)
+async def create_posts(post: CreatePost, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+    print(current_user.id)
+    return await services.create_posts(current_user.id, post, db)
 
 @router.delete("/delete/{id}", status_code= status.HTTP_204_NO_CONTENT)
 async def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-    return await services.delete_post(id, db)
+    return await services.delete_post(current_user.id, id, db)
 
 @router.put("/update/{id}", response_model= PostOut)
 async def update_post(id: int, updated_post: CreatePost, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     
-    return await services.update_post(id, updated_post, db)
+    return await services.update_post(current_user.id, id, updated_post, db)
