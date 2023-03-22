@@ -10,11 +10,11 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == request.email).first()
 
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User Not Found!")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found!")
     
     
     if not hashing.verify(request.password, user.password):
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=f"Incorrect Email or Password.")
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=f"Incorrect email or password.")
     
     access_token = oauth2.create_access_token(user)
 
@@ -24,7 +24,7 @@ async def signup(user: SignUpRequest, db: Session = Depends(get_db)):
     isExist = db.query(User).filter(User.email == user.email)
 
     if isExist.first():
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"An Account With Email {user.email} Already Exist.")
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"An account with email already exist.")
 
     hashed_password = hashing.hash(user.password)
     user.password = hashed_password
