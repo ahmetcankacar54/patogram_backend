@@ -17,5 +17,5 @@ app.include_router(comment.router)
 
 @app.get("/")
 def root():
-    return {"message": "welcome"}
+    return {"message": "Hello There!"}
 
