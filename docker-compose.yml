@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: patogram_backend_backend
+    container_name: patogram
     restart: always
     ports:
       - "80:80"

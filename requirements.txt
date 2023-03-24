@@ -10,3 +10,5 @@ python-jose
 python-multipart
 aiofiles
 gunicorn
+boto3
+pillow
