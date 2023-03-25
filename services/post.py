@@ -6,7 +6,7 @@ from database.configuration import get_db
 from sqlalchemy.orm import Session
 from utils import convert_to_file
 from utils import Constants as consts
-
+from typing import List
 
 async def get_posts(db: Session = Depends(get_db)):
     posts = db.query(Post).all()
@@ -26,7 +26,7 @@ async def get_user_posts(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id: {id} not found!")
     return posts
 
-async def create_posts(user_id: int, post: PostBase, bs64Texts: ImageBase, db: Depends(get_db)):    
+async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db: Depends(get_db)):    
 
     new_post = Post(**post.dict())
 
@@ -37,20 +37,23 @@ async def create_posts(user_id: int, post: PostBase, bs64Texts: ImageBase, db: D
     db.refresh(new_post)
 
     post_id = new_post.id
-    img_url = Image(**bs64Texts)
+   
+    for image in images:
 
-    for file in bs64Texts:
             try:
-                _image = convert_to_file(file)
+                newImage = Image(**image.dict())
+                print(f"new Image {newImage}")
+                _image = convert_to_file(image.imageUrl)
                 unique_id = str(uuid4().hex)
                 file_name = f"{user_id}"+f"/{post_id}"+f"/{unique_id}"+".jpg"                
                 consts.bucket.put_object(Key = file_name, Body = _image)
                 image_url = f"https://patogram-bucket.s3.amazonaws.com/{user_id}"+f"/{post_id}"+f"/{file_name}"
-                img_url.imageUrl = image_url
-                img_url.post_id = post_id
-                db.add(img_url)
+                print(f"Image Url {image_url}")
+                newImage.imageUrl = image_url
+                newImage.post_id = post_id
+                db.add(newImage)
                 db.commit()
-                db.refresh(img_url)
+                db.refresh(newImage)
             except Exception:
                 raise HTTPException(status_code=500, detail='Something went wrong')
         #return {"message": "Successfuly uploaded"}

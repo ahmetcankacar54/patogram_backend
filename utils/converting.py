@@ -21,7 +21,6 @@ def convert_to_file(bs64Text):
             
             decoded_image.save(output_image, format="JPEG", quality=40)
             output_image.seek(0)
-
             return output_image
         except Exception:
             raise HTTPException(status_code=500, detail='Something went wrong')

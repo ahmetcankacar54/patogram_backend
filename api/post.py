@@ -1,4 +1,4 @@
-from schemas import PostOut, CreatePost, ImageList
+from schemas import PostOut, CreatePost, ImageBase
 from fastapi import  status, Depends, APIRouter
 from database.configuration import get_db
 from sqlalchemy.orm import Session
@@ -26,10 +26,10 @@ async def get_user_posts(id: int, db: Session = Depends(get_db), current_user: i
 
     return await services.get_user_posts(id, db)   
 
-@router.post("/create", status_code=status.HTTP_201_CREATED, response_model= PostOut)
-async def create_posts(post: CreatePost, Texts: ImageList, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+@router.post("/create", status_code=status.HTTP_201_CREATED)
+async def create_posts(post: CreatePost, images: List[ImageBase], db: Session = Depends(get_db)):
 
-    return await services.create_posts(current_user.id, post, Texts, db)
+    return await services.create_posts(1, post, images, db)
 
 @router.delete("/delete/{id}", status_code= status.HTTP_204_NO_CONTENT)
 async def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
