@@ -29,7 +29,7 @@ async def get_user_posts(id: int, db: Session = Depends(get_db)):
 async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db: Depends(get_db)):    
 
     new_post = Post(**post.dict())
-
+    print(user_id)
     new_post.owner_id = user_id
 
     db.add(new_post)
@@ -47,7 +47,7 @@ async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db
                 unique_id = str(uuid4().hex)
                 file_name = f"{user_id}"+f"/{post_id}"+f"/{unique_id}"+".jpg"                
                 consts.bucket.put_object(Key = file_name, Body = _image)
-                image_url = f"https://patogram-bucket.s3.amazonaws.com/{user_id}"+f"/{post_id}"+f"/{file_name}"
+                image_url = f"https://patogram-s3.s3.amazonaws.com/"+f"{file_name}"
                 print(f"Image Url {image_url}")
                 newImage.imageUrl = image_url
                 newImage.post_id = post_id

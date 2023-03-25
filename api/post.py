@@ -27,9 +27,9 @@ async def get_user_posts(id: int, db: Session = Depends(get_db), current_user: i
     return await services.get_user_posts(id, db)   
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
-async def create_posts(post: CreatePost, images: List[ImageBase], db: Session = Depends(get_db)):
+async def create_posts(post: CreatePost, images: List[ImageBase], db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-    return await services.create_posts(1, post, images, db)
+    return await services.create_posts(current_user.id, post, images, db)
 
 @router.delete("/delete/{id}", status_code= status.HTTP_204_NO_CONTENT)
 async def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):

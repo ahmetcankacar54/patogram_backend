@@ -6,7 +6,7 @@ class Constants():
     ALGORITHM = "HS256"
     ACCESS_TOKEN_EXPIRE_DAYS = 60
     SQLALCHEMY_DATABASE_URL = "postgresql://postgres:Patogram54@database-1.cpkphrsvchmt.eu-central-1.rds.amazonaws.com"
-    AWS_BUCKET = "patogram-bucket"
+    AWS_BUCKET = "patogram-s3"
     s3 = boto3.resource("s3")
     bucket = s3.Bucket(AWS_BUCKET)   
 
