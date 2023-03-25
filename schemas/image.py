@@ -2,8 +2,8 @@ from typing import List, Text
 from pydantic import BaseModel, Field
 
 class ImageBase(BaseModel):
-    bs64Text: str = Field(List[Text])
+    bs64Text: str = Field(default=None)
 
-class ConvertImage(ImageBase):
-    pass
+class ImageList(BaseModel):
+    images: List[ImageBase]
 

@@ -37,7 +37,7 @@ async def create_posts(user_id: int, post: PostBase, bs64Texts: ImageBase, db: D
     db.refresh(new_post)
 
     post_id = new_post.id
-    img_url = Image(**bs64Texts.dict())
+    img_url = Image(**bs64Texts)
 
     for file in bs64Texts:
             try:

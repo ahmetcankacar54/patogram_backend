@@ -1,4 +1,4 @@
-from schemas import PostOut, CreatePost, ConvertImage
+from schemas import PostOut, CreatePost, ImageList
 from fastapi import  status, Depends, APIRouter
 from database.configuration import get_db
 from sqlalchemy.orm import Session
@@ -27,7 +27,7 @@ async def get_user_posts(id: int, db: Session = Depends(get_db), current_user: i
     return await services.get_user_posts(id, db)   
 
 @router.post("/create", status_code=status.HTTP_201_CREATED, response_model= PostOut)
-async def create_posts(post: CreatePost, Texts: ConvertImage, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+async def create_posts(post: CreatePost, Texts: ImageList, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
     return await services.create_posts(current_user.id, post, Texts, db)
 
