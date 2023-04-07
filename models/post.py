@@ -21,3 +21,4 @@ class Post(BaseModel):
     owner_id = Column(Integer, ForeignKey(
         "users.id", ondelete="CASCADE"), nullable=False)
     owner = relationship("User")
+    image_url = relationship("Image", back_populates="post")

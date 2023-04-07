@@ -29,7 +29,7 @@ class PostOut(PostBase):
     created_at: datetime = Field(default=None)
     # comment: int
     owner_id: int = Field(default=None)
-    images: List[ImageBase]
+    image_url: List[ImageBase]
     owner: UserSchema
 
     class Config:
