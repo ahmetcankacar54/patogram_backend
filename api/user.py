@@ -1,8 +1,8 @@
-from schemas import SignupResponse, SignUpRequest
 from fastapi import Depends, APIRouter
 from database.configuration import get_db
 from sqlalchemy.orm import Session
 from typing import List
+from schemas.post import ProfileOut
 from schemas.user import UserSchema
 import services
 
@@ -18,7 +18,7 @@ async def get_users(db: Session = Depends(get_db)):
     return await services.get_users(db)
 
 
-@router.get("/get/{id}", response_model=UserSchema)
+@router.get("/get/{id}", response_model=ProfileOut)
 async def get_user(id: int, db: Session = Depends(get_db)):
 
     return await services.get_user(id, db)

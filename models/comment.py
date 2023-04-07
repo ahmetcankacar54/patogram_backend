@@ -8,8 +8,10 @@ class Comment(BaseModel):
 
     content = Column(String, nullable=False)
     published = Column(Boolean, server_default='True', nullable=False)
-    owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable= False)
-    post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), nullable= False)
-    owner = relationship("User")
+    owner_id = Column(Integer, ForeignKey(
+        "users.id", ondelete="CASCADE"), nullable=False)
+    post_id = Column(Integer, ForeignKey(
+        "posts.id", ondelete="CASCADE"), nullable=False)
+    comment_owner = relationship("User")
     post = relationship("Post")
-
+    # likes = relationship("Like", back_populates="comment")

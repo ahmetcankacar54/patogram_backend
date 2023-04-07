@@ -11,3 +11,6 @@ class User(BaseModel):
     password = Column(String, nullable=False)
     profile_image = Column(String, nullable=True)
     user_bio = Column(String, nullable=True)
+    posts = relationship("Post", back_populates="post_owner")
+    userComment = relationship("Comment", back_populates="comment_owner")
+    # likes = relationship("Like", back_populates="like_owner")

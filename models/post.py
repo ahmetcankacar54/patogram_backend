@@ -20,5 +20,6 @@ class Post(BaseModel):
     published = Column(Boolean, server_default='True', nullable=False)
     owner_id = Column(Integer, ForeignKey(
         "users.id", ondelete="CASCADE"), nullable=False)
-    owner = relationship("User")
+    post_owner = relationship("User")
     image_url = relationship("Image", back_populates="post")
+    comments = relationship("Comment", back_populates="post")
