@@ -41,7 +41,7 @@ class PostOut(PostBase):
 
 class PostProfile(BaseModel):
     id: int = Field(default=None)
-    image_url: List[str]
+    image_url: List[ImageBase]
 
     class Config:
         orm_mode = True
