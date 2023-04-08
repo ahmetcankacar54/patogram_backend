@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from schemas.post import ProfileOut
 from schemas.user import UserSchema
+from security import oauth2
 import services
 
 router = APIRouter(
@@ -12,19 +13,13 @@ router = APIRouter(
 )
 
 
-@router.get("/get", response_model=List[UserSchema])
-async def get_users(db: Session = Depends(get_db)):
-
-    return await services.get_users(db)
-
-
 @router.get("/get/{id}", response_model=ProfileOut)
-async def get_user(id: int, db: Session = Depends(get_db)):
+async def get_profile(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
     return await services.get_user(id, db)
 
 
 @router.put("/update/{id}", response_model=UserSchema)
-async def update_user(id: int, updated_user: UserSchema, db: Session = Depends(get_db)):
+async def update_profile(id: int, updated_user: UserSchema, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
     return await services.update_user(id, updated_user, db)

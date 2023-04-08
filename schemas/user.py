@@ -14,6 +14,7 @@ class UserSchema(BaseModel):
     full_name: str = Field(default=None)
     email: str = Field(default=None)
     profile_image: Optional[str] = None
+    user_bio: str = Field(default=None)
 
     class Config:
         orm_mode = True
