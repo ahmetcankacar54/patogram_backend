@@ -5,8 +5,10 @@ from fastapi import status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
 from schemas.user import UserSchema
+from schemas.post import ProfileOut,PostProfile
+from schemas.image import ImageBase
 from utils import Constants as consts
-
+from typing import List
 from utils.converting import convert_to_file
 
 
@@ -22,7 +24,14 @@ async def get_user(id: int, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found!")
-    return user
+    
+    postList = [str]
+
+    for post in user.posts:
+        print(post.image_url[0].imageUrl)
+        postList.append(post.image_url[0].imageUrl)
+
+    return ProfileOut(id=user.id,full_name=user.full_name,email=user.email,profile_image=user.profile_image,posts=List[PostProfile(id=1,image_url=postList)])
 
 
 async def update_user(id: int, updated_user: UserSchema, db: Session = Depends(get_db)):
