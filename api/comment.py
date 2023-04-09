@@ -14,9 +14,9 @@ router = APIRouter(
 )
 
 @router.get("/{post_id}", status_code=status.HTTP_201_CREATED, response_model= List[CommentOut])
-async def get_comments(post_id:int, db: Session = Depends(get_db)):
+async def get_comments(post_id:int, db: Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user)): 
 
-    return await services.get_comments(db)
+    return await services.get_comments(post_id,db)
     
 
 @router.post("/{post_id}", status_code=status.HTTP_201_CREATED, response_model=CommentOut)

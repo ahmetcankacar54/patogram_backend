@@ -13,9 +13,7 @@ class CommentOut(CommentBase):
     id: int = Field(default=None)
     created_at: datetime = Field(default=None)
     likes: int = Field(default=None)
-    post_id: int = Field(default=None)
-    owner_id: int = Field(default=None)
-    owner: UserSchema
+    comment_owner: UserSchema
 
     class Config:
         orm_mode = True

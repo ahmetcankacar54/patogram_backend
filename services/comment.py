@@ -1,11 +1,13 @@
 from models import Comment
-from schemas import CreateComment, CommentBase
-from fastapi import  Response, status, HTTPException, Depends
+from schemas import CreateComment
+from fastapi import  Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
 
-async def get_comments(db: Session = Depends(get_db)):
-    comments = db.query(Comment).all()
+async def get_comments(post_id: int,db: Session = Depends(get_db)):
+
+    comments = db.query(Comment).filter(Comment.post_id == post_id).all()
+
     return comments
 
 async def create_comment(post_id: int, user_id: int, comment: CreateComment, db: Depends(get_db)):    
