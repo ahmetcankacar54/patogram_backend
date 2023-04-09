@@ -3,7 +3,7 @@ from models import User
 from fastapi import status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
-from schemas.user import UserSchema
+from schemas.user import UpdateUserSchema
 from utils import Constants as consts
 from typing import List
 from utils.converting import convert_to_file
@@ -19,9 +19,9 @@ async def get_profile(id: int, db: Session = Depends(get_db)):
     return user
 
 
-async def update_profile(id: int, updated_user: UserSchema, db: Session = Depends(get_db)):
-    user_querry = db.query(User).filter(User.id == id)
-    user = user_querry.first()
+async def update_profile(id: int, updated_user: UpdateUserSchema, db: Session = Depends(get_db)):
+    user_query = db.query(User).filter(User.id == id)
+    user = user_query.first()
 
     if user == None:
         raise HTTPException(
@@ -37,10 +37,10 @@ async def update_profile(id: int, updated_user: UserSchema, db: Session = Depend
         updated_user.profile_image = image_url
 
     else:
-        user_querry.update(updated_user.dict(), synchronize_session=False)
+        user_query.update(updated_user.dict(), synchronize_session=False)
         db.commit()
 
-    user_querry.update(updated_user.dict(), synchronize_session=False)
+    user_query.update(updated_user.dict(), synchronize_session=False)
     db.commit()
 
-    return user_querry.first()
+    return user_query.first()
