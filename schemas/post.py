@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 from schemas.user import UserSchema
 from schemas.image import ImageBase
+from schemas.thumbnail import Thumbnail
 from typing import List, Optional
 
 
@@ -29,30 +30,10 @@ class PostOut(PostBase):
     created_at: datetime = Field(default=None)
     # comment: int
     post_owner: int = Field(default=None)
+    thumbnail: List[Thumbnail]
     image_url: List[ImageBase]
+
     post_owner: UserSchema
-
-    class Config:
-        orm_mode = True
-
-# Profil postlarini dondurebilmek icin post'un altinda kullanmam gerekiyor.
-# Userda kullanmayi denedigimde circular usage hatasi veriyordu
-
-
-class PostProfile(BaseModel):
-    id: int = Field(default=None)
-    image_url: List[ImageBase]
-
-    class Config:
-        orm_mode = True
-
-
-class ProfileOut(UserSchema):
-    id: int = Field(default=None)
-    full_name: str = Field(default=None)
-    email: str = Field(default=None)
-    profile_image: Optional[str] = None
-    posts: List[PostProfile]
 
     class Config:
         orm_mode = True

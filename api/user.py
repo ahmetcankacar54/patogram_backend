@@ -2,8 +2,8 @@ from fastapi import Depends, APIRouter
 from database.configuration import get_db
 from sqlalchemy.orm import Session
 from typing import List
-from schemas.post import ProfileOut
-from schemas.user import UserSchema,UpdateUserSchema
+from schemas.user import ProfileOut
+from schemas.user import UserSchema, UpdateUserSchema
 from security import oauth2
 import services
 
