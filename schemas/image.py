@@ -7,3 +7,10 @@ class ImageBase(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class ThumbNail(BaseModel):
+    thumbnail: str = Field(default=None)
+
+    class Config:
+        orm_mode = True
