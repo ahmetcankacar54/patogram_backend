@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 from schemas.user import UserSchema
-from schemas.image import ImageBase, ThumbNail
+from schemas.image import Images
 from typing import List
 
 
@@ -29,8 +29,7 @@ class PostOut(PostBase):
     created_at: datetime = Field(default=None)
     # comment: int
     post_owner: int = Field(default=None)
-    thumbnail: List[ThumbNail]
-    image_url: List[ImageBase]
+    images: List[Images]
 
     post_owner: UserSchema
 

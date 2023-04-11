@@ -21,6 +21,8 @@ class Post(BaseModel):
     owner_id = Column(Integer, ForeignKey(
         "users.id", ondelete="CASCADE"), nullable=False)
     post_owner = relationship("User")
-    image_url = relationship("Image", back_populates="post")
-    thumbnail = relationship("Image", back_populates="post_1")
+    images = relationship(
+        "Image", overlaps="images", back_populates="post")
+    thumbnail = relationship(
+        "Image", overlaps="images", back_populates="post_1")
     comments = relationship("Comment", back_populates="post")

@@ -35,7 +35,6 @@ async def get_user_posts(id: int, db: Session = Depends(get_db)):
 async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db: Depends(get_db)):
 
     new_post = Post(**post.dict())
-    print(user_id)
     new_post.owner_id = user_id
 
     db.add(new_post)
@@ -44,12 +43,11 @@ async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db
 
     post_id = new_post.id
 
-    for image in images:
+    for im in images:
 
         try:
-            newImage = Image(**image.dict())
-            print(f"new Image {newImage}")
-            _image, thmbnail = convert_to_file(image.imageUrl)
+            newImage = Image(**im.dict())
+            _image, thmbnail = convert_to_file(im.image)
             unique_id = str(uuid4().hex)
             file_name = f"{user_id}"+f"/{post_id}"+f"/{unique_id}"+".jpg"
             thmb_name = f"{user_id}"+f"/{post_id}" + \
@@ -60,7 +58,7 @@ async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db
             image_url = f"https://patogram-s3.s3.amazonaws.com/"+f"{file_name}"
             print(f"Image Url {image_url}")
             newImage.thumbnail = thumbnail
-            newImage.imageUrl = image_url
+            newImage.image = image_url
             newImage.post_id = post_id
             db.add(newImage)
             db.commit()

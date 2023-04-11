@@ -5,7 +5,6 @@ from database.configuration import get_db
 from sqlalchemy.orm import Session
 from schemas.user import UpdateUserSchema
 from utils import Constants as consts
-from typing import List
 from utils.converting import convert_to_file
 
 

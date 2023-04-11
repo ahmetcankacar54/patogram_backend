@@ -3,13 +3,14 @@ from pydantic import BaseModel, Field
 
 
 class ImageBase(BaseModel):
-    imageUrl: str = Field(default=None)
+    image: str = Field(default=None)
 
     class Config:
         orm_mode = True
 
 
-class ThumbNail(BaseModel):
+class Images(BaseModel):
+    image: str = Field(default=None)
     thumbnail: str = Field(default=None)
 
     class Config:
