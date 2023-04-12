@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.post("/{comment_id}/{like_status}", status_code=status.HTTP_200_OK)
+@router.post("/{comment_id}/{like_status}", status_code=status.HTTP_200_OK, response_model=int)
 async def like(comment_id: int, like_status: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
     return await services.like(comment_id, like_status, current_user.id, db)

@@ -4,11 +4,6 @@ from database.configuration import get_db
 from models import Like, Comment
 
 
-"""async def count_likes(db: Session = Depends(get_db)):
-    
-    return await services.count_likes(db)"""
-
-
 async def like(comment_id: int, like_status: int, user_id: int, db: Session = Depends(get_db)):
 
     comment = db.query(Comment).filter(Comment.id == comment_id).first()
@@ -28,9 +23,10 @@ async def like(comment_id: int, like_status: int, user_id: int, db: Session = De
         new_like = Like(comment_id=comment_id, user_id=user_id)
         db.add(new_like)
         db.commit()
-        return {"message": "successfully added like"}
+        likes = db.query(Like).filter(Like.comment_id == comment_id).count()
+        return likes
     else:
         like_query.delete(synchronize_session=False)
         db.commit()
-
-        return {"message": "successfully deleted like"}
+        likes = db.query(Like).filter(Like.comment_id == comment_id).count()
+        return likes
