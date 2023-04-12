@@ -4,21 +4,20 @@ from sqlalchemy.orm import Session
 from models.favorite import Favorite
 from models.post import Post
 from schemas.favorite import FavoriteOut
+from schemas.post import PostOut
 
 
 async def get_favorite(id: int, db: Session = Depends(get_db)):
     favorites = db.query(Favorite).filter(Favorite.user_id == id).all()
 
     for fav in favorites:
-        posts = db.query(Post).filter(Post.id == fav.post_id).first()
-        # posts = FavoriteOut(post_querry)
-        print(fav.post_id)
-        print(type(posts))
+        post = db.query(Post).filter(Post.id == fav.post_id).first()
 
     if not favorites:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found!")
 
+    posts = PostOut(**post.dict())
     return posts
 
 

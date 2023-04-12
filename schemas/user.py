@@ -30,17 +30,14 @@ class UserSchema(BaseModel):
 
 class PostProfile(BaseModel):
     id: int = Field(default=None)
-    image_url: List[ImageBase]
+    images: List[ImageBase]
 
     class Config:
         orm_mode = True
 
 
 class ProfileOut(UserSchema):
-    id: int = Field(default=None)
-    full_name: str = Field(default=None)
-    email: str = Field(default=None)
-    profile_image: Optional[str] = None
+
     posts: List[PostProfile]
 
     class Config:

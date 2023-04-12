@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.get("/get/{id}", response_model=List[PostOut])
+@router.get("/get/{id}", response_model=FavoriteOut)
 async def get_favorite(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
     return await services.get_favorite(id, db)
