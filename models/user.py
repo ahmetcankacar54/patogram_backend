@@ -15,3 +15,5 @@ class User(BaseModel):
     userComment = relationship(
         "models.comment.Comment", back_populates="comment_owner")
     likes = relationship("models.like.Like", back_populates="like_owner")
+    favorites = relationship(
+        "models.favorite.Favorite", back_populates="userId")

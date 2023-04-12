@@ -26,3 +26,4 @@ class Post(BaseModel):
     thumbnail = relationship(
         "models.image.Image", overlaps="images", back_populates="post_1")
     comments = relationship("models.comment.Comment", back_populates="post")
+    favorites = relationship("models.favorite.Favorite", back_populates="post")
