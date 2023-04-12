@@ -1,6 +1,7 @@
 from pydantic import Field, conint
 from database.configuration import Base
 
+
 class Like(Base):
     __tablename__ = "likes"
     comment_id: int = Field(default=None)

@@ -4,6 +4,11 @@ from database.configuration import get_db
 from models import Like, Comment
 
 
+"""async def count_likes(db: Session = Depends(get_db)):
+    
+    return await services.count_likes(db)"""
+
+
 async def like(comment_id: int, like_status: int, user_id: int, db: Session = Depends(get_db)):
 
     comment = db.query(Comment).filter(Comment.id == comment_id).first()

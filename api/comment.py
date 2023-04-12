@@ -7,20 +7,19 @@ import services
 from schemas import CommentBase, CommentOut
 
 
-
 router = APIRouter(
     prefix="/api/comment",
     tags=['Comment']
 )
 
-@router.get("/{post_id}", status_code=status.HTTP_201_CREATED, response_model= List[CommentOut])
-async def get_comments(post_id:int, db: Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user)): 
 
-    return await services.get_comments(post_id,db)
-    
+@router.get("/{post_id}", status_code=status.HTTP_200_OK, response_model=List[CommentOut])
+async def get_comments(post_id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+
+    return await services.get_comments(post_id, db)
+
 
 @router.post("/{post_id}", status_code=status.HTTP_201_CREATED, response_model=CommentOut)
 async def create_comment(post_id: int, comment: CommentBase, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
     return await services.create_comment(post_id, current_user.id, comment, db)
-

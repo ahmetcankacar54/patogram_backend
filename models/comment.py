@@ -12,6 +12,7 @@ class Comment(BaseModel):
         "users.id", ondelete="CASCADE"), nullable=False)
     post_id = Column(Integer, ForeignKey(
         "posts.id", ondelete="CASCADE"), nullable=False)
-    comment_owner = relationship("User")
-    post = relationship("Post")
-    # likes = relationship("Like", back_populates="comment")
+    likes = Column(Integer, nullable=True)
+    comment_owner = relationship("models.user.User")
+    post = relationship("models.post.Post")
+    like = relationship("models.like.Like", back_populates="comment")
