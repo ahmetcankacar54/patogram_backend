@@ -37,7 +37,6 @@ class PostProfile(BaseModel):
 
 
 class ProfileOut(UserSchema):
-
     posts: List[PostProfile]
 
     class Config:

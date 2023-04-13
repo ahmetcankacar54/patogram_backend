@@ -1,7 +1,7 @@
 from typing import List
 from pydantic import BaseModel, Field, conint
 from database.configuration import Base
-from schemas.post import PostOut
+from schemas.image import ImageBase
 
 
 class FavoriteBase(BaseModel):
@@ -13,8 +13,16 @@ class FavoriteBase(BaseModel):
         orm_mode = True
 
 
+class PostFavorite(BaseModel):
+    id: int = Field(default=None)
+    images: List[ImageBase]
+
+    class Config:
+        orm_mode = True
+
+
 class FavoriteOut(BaseModel):
-    posts: List[PostOut]
+    post: List[PostFavorite]
 
     class Config:
         orm_mode = True
