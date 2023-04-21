@@ -28,5 +28,5 @@ class Post(BaseModel):
     comments = relationship("models.comment.Comment", back_populates="post")
     favorites = relationship("models.favorite.Favorite",
                              overlaps="favorites", back_populates="post")
-    favorite = relationship("models.favorite.Favorite",
-                            overlaps="favorites", back_populates="isFavorite")
+    isFavorite = relationship("models.favorite.Favorite",
+                            overlaps="favorites", back_populates="is_favorite")

@@ -15,13 +15,13 @@ router = APIRouter(
 @router.get("/get", response_model=List[PostOut])
 async def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-    return await services.get_posts(current_user, db)
+    return await services.get_posts(current_user.id, db)
 
 
 @router.get("/get/{id}", response_model=PostOut)
 async def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-    return await services.get_post(id, current_user, db)
+    return await services.get_post(id, current_user.id, db)
 
 
 @router.get("/user/{id}", response_model=List[PostOut])

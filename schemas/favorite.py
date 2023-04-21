@@ -7,7 +7,6 @@ class FavoriteBase(BaseModel):
     user_id: int = Field(default=None)
     post_id: int = Field(default=None)
     fav_status: conint(le=1) = Field(default=None)
-    isFavorite: bool = True
 
     class Config:
         orm_mode = True
@@ -24,5 +23,11 @@ class PostFavorite(BaseModel):
 class FavoriteOut(BaseModel):
     post: List[PostFavorite]
 
+    class Config:
+        orm_mode = True
+
+class IsFavorite(BaseModel):
+    isFavorite: bool = True
+    
     class Config:
         orm_mode = True

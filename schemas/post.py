@@ -3,6 +3,7 @@ from datetime import datetime
 from schemas.user import UserSchema
 from schemas.image import Images
 from typing import List
+from schemas.favorite import IsFavorite
 
 
 class PostBase(BaseModel):
@@ -30,7 +31,7 @@ class PostOut(PostBase):
     # comment: int
     post_owner: int = Field(default=None)
     images: List[Images]
-    favorite: bool = Field(default=None)
+    isFavorite: bool = Field(default=None)
     post_owner: UserSchema
 
     class Config:

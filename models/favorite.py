@@ -13,4 +13,4 @@ class Favorite(BaseModel):
     isFavorite = Column(Boolean, server_default='True', nullable=False)
     userId = relationship("models.user.User")
     post = relationship("models.post.Post", overlaps="isFavorite")
-    Favorite = relationship("models.post.Post", overlaps="favorite, post")
+    is_favorite = relationship("models.post.Post", overlaps="favorites, post")

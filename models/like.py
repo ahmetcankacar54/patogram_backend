@@ -1,3 +1,4 @@
+from pydantic import validator
 from database.configuration import Base
 from sqlalchemy import Boolean, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship

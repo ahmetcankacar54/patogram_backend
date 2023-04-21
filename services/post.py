@@ -1,7 +1,9 @@
 from uuid import uuid4
+
+from sqlalchemy import true
 from models import Post, Image
 from models.favorite import Favorite
-from schemas import CreatePost, PostBase, ImageBase
+from schemas import CreatePost, PostBase, ImageBase, IsFavorite
 from fastapi import Response, status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
@@ -17,9 +19,10 @@ async def get_posts(id: int, db: Session = Depends(get_db)):
         querry = db.query(Favorite).filter(Favorite.post_id == p.id,
                                            Favorite.user_id == id, Favorite.isFavorite == True).first()
         if querry:
-            p.favorite = True
+            p.isFavorite = True
             isFavorite.append(p)
         else:
+            p.isFavorite = False
             isFavorite.append(p)
 
     return isFavorite
@@ -29,9 +32,12 @@ async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
     post = db.query(Post).filter(Post.id == id).first()
     querry = db.query(Favorite).filter(Favorite.post_id == post.id,
                                        Favorite.user_id == user_id, Favorite.isFavorite == True).first()
-
+    amcik = [post]
+    #print(post.post_owner.full_name)
     if querry:
-        post.favorite = True
+        #amcik.append(post)
+        amcik.post.isFavorite = True
+        return amcik
 
     if not post:
         raise HTTPException(
