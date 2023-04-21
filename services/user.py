@@ -28,7 +28,7 @@ async def update_profile(id: int, updated_user: UpdateUserSchema, db: Session = 
 
     if updated_user.profile_image != "":
         newImage = updated_user.profile_image
-        _image = convert_to_file(newImage)
+        _image, thumb = convert_to_file(newImage)
         unique_id = str(uuid4().hex)
         file_name = f"{id}"+f"/profile_image"+f"/{unique_id}"+".jpg"
         consts.bucket.put_object(Key=file_name, Body=_image)
