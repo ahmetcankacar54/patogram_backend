@@ -15,4 +15,7 @@ class Comment(BaseModel):
     likes = Column(Integer, nullable=True)
     comment_owner = relationship("models.user.User")
     post = relationship("models.post.Post")
-    like = relationship("models.like.Like", back_populates="comment")
+    like = relationship("models.like.Like", overlaps="likes",
+                        back_populates="comment")
+    liked = relationship("models.like.Like",
+                         overlaps="likes", back_populates="like")

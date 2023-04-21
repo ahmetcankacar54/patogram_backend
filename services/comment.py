@@ -6,14 +6,25 @@ from database.configuration import get_db
 from sqlalchemy.orm import Session
 
 
-async def get_comments(post_id: int, db: Session = Depends(get_db)):
-
+async def get_comments(post_id: int, user_id: int, db: Session = Depends(get_db)):
     comments = db.query(Comment).filter(Comment.post_id == post_id).all()
+    cmnts = []
+
     for comment in comments:
         likes = db.query(Like).filter(Like.comment_id == comment.id).count()
         comment.likes = likes
 
-    return comments
+    for comm in comments:
+        querry = db.query(Like).filter(Like.user_id == user_id,
+                                       Like.comment_id == comm.id).first()
+
+        if querry:
+            comm.liked = True
+            cmnts.append(comm)
+        else:
+            cmnts.append(comm)
+
+    return cmnts
 
 
 async def create_comment(post_id: int, user_id: int, comment: CreateComment, db: Depends(get_db)):

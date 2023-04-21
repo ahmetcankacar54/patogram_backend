@@ -30,7 +30,7 @@ class PostOut(PostBase):
     # comment: int
     post_owner: int = Field(default=None)
     images: List[Images]
-
+    favorite: bool = Field(default=None)
     post_owner: UserSchema
 
     class Config:

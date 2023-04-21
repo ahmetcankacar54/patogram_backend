@@ -1,5 +1,6 @@
 from uuid import uuid4
 from models import Post, Image
+from models.favorite import Favorite
 from schemas import CreatePost, PostBase, ImageBase
 from fastapi import Response, status, HTTPException, Depends
 from database.configuration import get_db
@@ -9,13 +10,28 @@ from utils import Constants as consts
 from typing import List
 
 
-async def get_posts(db: Session = Depends(get_db)):
-    posts = db.query(Post).all()
-    return posts
+async def get_posts(id: int, db: Session = Depends(get_db)):
+    posts = db.query(Post).limit(10).all()
+    isFavorite = []
+    for p in posts:
+        querry = db.query(Favorite).filter(Favorite.post_id == p.id,
+                                           Favorite.user_id == id, Favorite.isFavorite == True).first()
+        if querry:
+            p.favorite = True
+            isFavorite.append(p)
+        else:
+            isFavorite.append(p)
+
+    return isFavorite
 
 
-async def get_post(id: int, db: Session = Depends(get_db)):
+async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
     post = db.query(Post).filter(Post.id == id).first()
+    querry = db.query(Favorite).filter(Favorite.post_id == post.id,
+                                       Favorite.user_id == user_id, Favorite.isFavorite == True).first()
+
+    if querry:
+        post.favorite = True
 
     if not post:
         raise HTTPException(
@@ -23,13 +39,23 @@ async def get_post(id: int, db: Session = Depends(get_db)):
     return post
 
 
-async def get_user_posts(id: int, db: Session = Depends(get_db)):
+async def get_user_posts(id: int, user_id: int, db: Session = Depends(get_db)):
     posts = db.query(Post).filter(Post.owner_id == id).all()
+
+    isFavorite = []
+    for p in posts:
+        querry = db.query(Favorite).filter(Favorite.post_id == p.id,
+                                           Favorite.user_id == user_id, Favorite.isFavorite == True).first()
+        if querry:
+            p.favorite = True
+            isFavorite.append(p)
+        else:
+            isFavorite.append(p)
 
     if not posts:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!")
-    return posts
+    return isFavorite
 
 
 async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db: Depends(get_db)):
