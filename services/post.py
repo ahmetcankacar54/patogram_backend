@@ -3,7 +3,7 @@ from uuid import uuid4
 from sqlalchemy import true
 from models import Post, Image
 from models.favorite import Favorite
-from schemas import CreatePost, PostBase, ImageBase, IsFavorite
+from schemas import CreatePost, PostBase, ImageBase
 from fastapi import Response, status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
@@ -30,38 +30,20 @@ async def get_posts(id: int, db: Session = Depends(get_db)):
 
 async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
     post = db.query(Post).filter(Post.id == id).first()
-    querry = db.query(Favorite).filter(Favorite.post_id == post.id,
-                                       Favorite.user_id == user_id, Favorite.isFavorite == True).first()
-    amcik = [post]
-    #print(post.post_owner.full_name)
-    if querry:
-        #amcik.append(post)
-        amcik.post.isFavorite = True
-        return amcik
-
+    
     if not post:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!")
+
+    querry = db.query(Favorite).filter(Favorite.post_id == post.id,
+                                       Favorite.user_id == user_id, Favorite.isFavorite == True).first()
+
+    if querry:
+        post.isFavorite = True
+    if not querry:
+        post.isFavorite = False
+
     return post
-
-
-async def get_user_posts(id: int, user_id: int, db: Session = Depends(get_db)):
-    posts = db.query(Post).filter(Post.owner_id == id).all()
-
-    isFavorite = []
-    for p in posts:
-        querry = db.query(Favorite).filter(Favorite.post_id == p.id,
-                                           Favorite.user_id == user_id, Favorite.isFavorite == True).first()
-        if querry:
-            p.favorite = True
-            isFavorite.append(p)
-        else:
-            isFavorite.append(p)
-
-    if not posts:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!")
-    return isFavorite
 
 
 async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db: Depends(get_db)):

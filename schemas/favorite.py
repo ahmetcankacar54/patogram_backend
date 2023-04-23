@@ -25,9 +25,3 @@ class FavoriteOut(BaseModel):
 
     class Config:
         orm_mode = True
-
-class IsFavorite(BaseModel):
-    isFavorite: bool = True
-    
-    class Config:
-        orm_mode = True

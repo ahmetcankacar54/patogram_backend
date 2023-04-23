@@ -24,12 +24,6 @@ async def get_post(id: int, db: Session = Depends(get_db), current_user: int = D
     return await services.get_post(id, current_user.id, db)
 
 
-@router.get("/user/{id}", response_model=List[PostOut])
-async def get_user_posts(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-
-    return await services.get_user_posts(id, db)
-
-
 @router.post("/create", status_code=status.HTTP_201_CREATED)
 async def create_posts(post: CreatePost, images: List[ImageBase], db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
