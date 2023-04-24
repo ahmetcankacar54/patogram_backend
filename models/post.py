@@ -9,7 +9,6 @@ class Post(BaseModel):
     disease_type = Column(String, nullable=False)
     tissue_sample_collection_method = Column(String, nullable=False)
     paint_type = Column(String, nullable=False)
-    zoom_amount = Column(String, nullable=False)
     patient_age = Column(Integer, nullable=False)
     patient_gender = Column(String, nullable=False)
     patient_other_disease = Column(String, nullable=False)

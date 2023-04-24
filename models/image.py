@@ -10,5 +10,6 @@ class Image(BaseModel):
     thumbnail = Column(String, nullable=False)
     post_id = Column(Integer, ForeignKey(
         "posts.id", ondelete="CASCADE"), nullable=False)
+    zoom_amount = Column(String, nullable=False)
     post = relationship("models.post.Post", overlaps="thumbnail")
     post_1 = relationship("models.post.Post", overlaps="images,post")

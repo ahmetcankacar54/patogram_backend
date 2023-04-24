@@ -9,7 +9,6 @@ class PostBase(BaseModel):
     disease_type: str = Field(default=None)
     tissue_sample_collection_method: str = Field(default=None)
     paint_type: str = Field(default=None)
-    zoom_amount: str = Field(default=None)
     patient_age: int = Field(default=None)
     patient_gender: str = Field(default=None)
     patient_other_disease: str = Field(default=None)

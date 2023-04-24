@@ -70,10 +70,10 @@ async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db
             consts.bucket.put_object(Key=file_name, Body=_image)
             thumbnail = f"https://patogram-s3.s3.amazonaws.com/"+f"{thmb_name}"
             image_url = f"https://patogram-s3.s3.amazonaws.com/"+f"{file_name}"
-            print(f"Image Url {image_url}")
             newImage.thumbnail = thumbnail
             newImage.image = image_url
             newImage.post_id = post_id
+            newImage.zoom_amount = im.zoom_amount
             db.add(newImage)
             db.commit()
             db.refresh(newImage)
