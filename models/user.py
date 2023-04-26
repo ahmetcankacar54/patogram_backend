@@ -17,3 +17,4 @@ class User(BaseModel):
     likes = relationship("models.like.Like", back_populates="like_owner")
     favorites = relationship(
         "models.favorite.Favorite", back_populates="userId")
+    polls = relationship("models.poll.Poll", back_populates="poll_owner")

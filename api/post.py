@@ -3,6 +3,7 @@ from fastapi import status, Depends, APIRouter
 from database.configuration import get_db
 from sqlalchemy.orm import Session
 from typing import List
+from schemas.poll import PollBase, PollCreate
 import services
 from security import oauth2
 
@@ -25,9 +26,9 @@ async def get_post(id: int, db: Session = Depends(get_db), current_user: int = D
 
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
-async def create_posts(post: CreatePost, images: List[ImageBase], db: Session = Depends(get_db)):
+async def create_posts(post: CreatePost, images: List[ImageBase], poll: PollCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
-    return await services.create_posts(1, post, images, db)
+    return await services.create_posts(current_user.id, post, images, poll, db)
 
 
 @router.delete("/delete/{id}", status_code=status.HTTP_204_NO_CONTENT)

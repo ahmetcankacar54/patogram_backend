@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from database.configuration import get_db
 from security import oauth2
 import services
-from schemas import CommentOut
 
 
 router = APIRouter(

@@ -3,10 +3,12 @@ from uuid import uuid4
 from sqlalchemy import true
 from models import Post, Image
 from models.favorite import Favorite
+from models.poll import Poll
 from schemas import CreatePost, PostBase, ImageBase
 from fastapi import Response, status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
+from schemas.poll import PollBase, PollCreate
 from utils import convert_to_file
 from utils import Constants as consts
 from typing import List
@@ -30,7 +32,7 @@ async def get_posts(id: int, db: Session = Depends(get_db)):
 
 async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
     post = db.query(Post).filter(Post.id == id).first()
-    
+
     if not post:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!")
@@ -46,7 +48,7 @@ async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
     return post
 
 
-async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db: Depends(get_db)):
+async def create_posts(user_id: int, post: CreatePost, images: List[ImageBase], polls: PollCreate, db: Depends(get_db)):
 
     new_post = Post(**post.dict())
     new_post.owner_id = user_id
@@ -56,6 +58,16 @@ async def create_posts(user_id: int, post: PostBase, images: List[ImageBase], db
     db.refresh(new_post)
 
     post_id = new_post.id
+
+    poll = Poll(**polls.dict())
+    poll.user_id = user_id
+    poll.post_id = post_id
+    poll.item = polls.item
+    poll.isChosen = polls.isChosen
+    print(poll.item)
+    db.add(poll)
+    db.commit()
+    db.refresh(poll)
 
     for im in images:
 
