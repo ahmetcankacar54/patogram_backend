@@ -48,7 +48,7 @@ async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
     return post
 
 
-async def create_posts(user_id: int, post: CreatePost, images: List[ImageBase], polls: PollCreate, db: Depends(get_db)):
+async def create_posts(user_id: int, post: CreatePost, images: List[ImageBase], polls: List[PollCreate], db: Depends(get_db)):
 
     new_post = Post(**post.dict())
     new_post.owner_id = user_id
@@ -59,15 +59,16 @@ async def create_posts(user_id: int, post: CreatePost, images: List[ImageBase], 
 
     post_id = new_post.id
 
-    poll = Poll(**polls.dict())
-    poll.user_id = user_id
-    poll.post_id = post_id
-    poll.item = polls.item
-    poll.isChosen = polls.isChosen
-    print(poll.item)
-    db.add(poll)
-    db.commit()
-    db.refresh(poll)
+    for pol in polls:
+        poll = Poll(**pol.dict())
+        poll.user_id = user_id
+        poll.post_id = post_id
+        poll.item = pol.item
+        poll.isChosen = pol.isChosen
+        print(poll.item)
+        db.add(poll)
+        db.commit()
+        db.refresh(poll)
 
     for im in images:
 

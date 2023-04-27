@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from models import Base
 from database.configuration import engine
-from api import post, user, auth, like, comment, favorite, poll
+from api import post, user, auth, like, comment, favorite, poll, vote
 
 
 Base.metadata.create_all(bind=engine)
@@ -15,6 +15,7 @@ app.include_router(like.router)
 app.include_router(comment.router)
 app.include_router(favorite.router)
 app.include_router(poll.router)
+app.include_router(vote.router)
 
 
 @app.get("/")

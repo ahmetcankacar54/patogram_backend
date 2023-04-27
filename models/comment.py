@@ -18,4 +18,4 @@ class Comment(BaseModel):
     like = relationship("models.like.Like", overlaps="likes",
                         back_populates="comment")
     liked = relationship("models.like.Like",
-                         overlaps="likes", back_populates="like")
+                         overlaps="like", back_populates="like")
