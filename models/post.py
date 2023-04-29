@@ -26,6 +26,5 @@ class Post(BaseModel):
         "models.image.Image", overlaps="images", back_populates="post_1")
     comments = relationship("models.comment.Comment", back_populates="post")
     favorites = relationship("models.favorite.Favorite", back_populates="post")
-    polls = relationship("models.poll.Poll", uselist=False,
-                         back_populates="post")
+    polls = relationship("models.poll.Poll", back_populates="post")
     votes = relationship("models.vote.Vote", back_populates="post")

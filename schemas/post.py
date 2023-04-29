@@ -31,7 +31,7 @@ class PostOut(PostBase):
     images: List[Images]
     isFavorite: bool
     post_owner: UserSchema
-    polls: PollBase
+    polls: List[PollBase]
 
     class Config:
         orm_mode = True
