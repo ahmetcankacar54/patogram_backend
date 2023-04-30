@@ -15,12 +15,12 @@ async def get_favorite(id: int, db: Session = Depends(get_db)):
 
     if not favorites:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found!")
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"No Favorite Post Yet!")
 
     return favorite
 
 
-async def save_favorite(favorite: FavoriteBase, current_user: int, db: Session = Depends(get_db)):
+async def set_favorite(favorite: FavoriteBase, current_user: int, db: Session = Depends(get_db)):
     fav = FavoriteBase(**favorite.dict())
 
     post = db.query(Post).filter(Post.id == fav.post_id).first()
