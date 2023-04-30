@@ -8,3 +8,11 @@ class ImageBase(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class CreatePostImageModel(BaseModel):
+    image: str = Field(default=None)
+    zoom_amount: str = Field(default=None)
+
+    class Config:
+        orm_mode = True

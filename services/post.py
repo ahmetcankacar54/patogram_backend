@@ -3,7 +3,7 @@ from uuid import uuid4
 from models import Post, Image
 from models.favorite import Favorite
 from models.poll import Poll
-from schemas import CreatePost, ImageBase
+from schemas import CreatePost, CreatePostImageModel
 from fastapi import Response, status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
@@ -47,7 +47,7 @@ async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
     return post
 
 
-async def create_posts(user_id: int, post: CreatePost, images: List[ImageBase], polls: List[PollCreate], db: Depends(get_db)):
+async def create_posts(user_id: int, post: CreatePost, images: List[CreatePostImageModel], polls: List[PollCreate], db: Depends(get_db)):
 
     new_post = Post(**post.dict())
     new_post.owner_id = user_id
