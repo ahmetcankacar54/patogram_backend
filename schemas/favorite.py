@@ -20,6 +20,14 @@ class PostFavorite(BaseModel):
         orm_mode = True
 
 
+class SetFavoriteBase(BaseModel):
+    post_id: int = Field(default=None)
+    fav_status: conint(le=1) = Field(default=None)
+
+    class Config:
+        orm_mode = True
+
+
 class FavoriteOut(BaseModel):
     post: List[PostFavorite]
 

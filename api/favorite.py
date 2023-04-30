@@ -2,7 +2,7 @@ from fastapi import Depends, APIRouter, status
 from database.configuration import get_db
 from sqlalchemy.orm import Session
 from typing import List
-from schemas.favorite import FavoriteBase, PostFavorite
+from schemas.favorite import SetFavoriteBase, PostFavorite
 from security import oauth2
 import services
 
@@ -19,6 +19,6 @@ async def get_favorite(db: Session = Depends(get_db), current_user: int = Depend
 
 
 @router.post("/set", status_code=status.HTTP_200_OK)
-async def set_favorite(favorite: FavoriteBase, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+async def set_favorite(favorite: SetFavoriteBase, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
     return await services.set_favorite(favorite, current_user.id, db)
