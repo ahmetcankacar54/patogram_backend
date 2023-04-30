@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 from schemas.poll import PollBase
 from schemas.user import UserSchema
-from schemas.image import Images
+from schemas.image import ImageBase
 from typing import List
 
 
@@ -28,7 +28,7 @@ class PostOut(PostBase):
     id: int = Field(default=None)
     created_at: datetime = Field(default=None)
     post_owner: int = Field(default=None)
-    images: List[Images]
+    images: List[ImageBase]
     isFavorite: bool
     post_owner: UserSchema
     polls: List[PollBase]

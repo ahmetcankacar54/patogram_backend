@@ -1,14 +1,13 @@
 from uuid import uuid4
 
-from sqlalchemy import true
 from models import Post, Image
 from models.favorite import Favorite
 from models.poll import Poll
-from schemas import CreatePost, PostBase, ImageBase
+from schemas import CreatePost, ImageBase
 from fastapi import Response, status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
-from schemas.poll import PollBase, PollCreate
+from schemas.poll import PollCreate
 from utils import convert_to_file
 from utils import Constants as consts
 from typing import List
