@@ -16,7 +16,7 @@ class CommentOut(CommentBase):
     id: int = Field(default=None)
     created_at: datetime = Field(default=None)
     likes: int = Field(default=None)
-    liked: bool = Field(default=None)
+    is_liked: bool = Field(default=False)
     comment_owner: UserSchema
 
     class Config:
