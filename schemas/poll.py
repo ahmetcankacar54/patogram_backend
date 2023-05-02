@@ -18,3 +18,10 @@ class PollCreate(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class GetPollResponseModel(PollBase):
+    percentage: float = Field(default=None)
+
+    class Config:
+        orm_mode = True
