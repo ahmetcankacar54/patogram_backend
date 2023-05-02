@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 
 class PollBase(BaseModel):
+    id: int = Field(default=None)
     user_id: int = Field(default=None)
     post_id: int = Field(default=None)
     item: str = Field(default=None)
