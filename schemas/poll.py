@@ -21,6 +21,7 @@ class PollCreate(BaseModel):
 
 
 class GetPollResponseModel(PollBase):
+    votes: int = Field(default=None)
     percentage: float = Field(default=None)
 
     class Config:
