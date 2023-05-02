@@ -20,7 +20,9 @@ class PollCreate(BaseModel):
         orm_mode = True
 
 
-class GetPollResponseModel(PollBase):
+class GetPollResponseModel(BaseModel):
+    id: int = Field(default=None)
+    item: str = Field(default=None)
     votes: int = Field(default=None)
     percentage: float = Field(default=None)
 
