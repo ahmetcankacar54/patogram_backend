@@ -15,7 +15,6 @@ class AddVote(BaseModel):
     poll_id: int = Field(default=None)
     post_id: int = Field(default=None)
     vote_status: conint(le=1) = Field(default=None)
-    isVote: bool = True
 
     class Config:
         orm_mode = True

@@ -22,6 +22,7 @@ async def get_poll(post_id: int, db: Session = Depends(get_db)):
         vote = poll_list[n]
         if vote.votes > 0:
             percent = (vote.votes/total_votes)*100
+            percent = round(percent, 2)
             vote.percentage = percent
         elif vote.votes == 0:
             vote.percentage = 0

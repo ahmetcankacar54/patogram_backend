@@ -33,7 +33,8 @@ async def vote(votes: AddVote, user_id: int, db: Session = Depends(get_db)):
             is_vote_querry.delete(synchronize_session=False)
             db.commit()
 
-        new_vote = Vote(poll_id=poll_id, user_id=user_id, post_id=post_id)
+        new_vote = Vote(poll_id=poll_id, user_id=user_id,
+                        post_id=post_id, isVote=True)
         db.add(new_vote)
         db.commit()
     else:
