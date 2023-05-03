@@ -14,7 +14,7 @@ router = APIRouter(
 
 
 @router.get("/get/{post_id}", response_model=List[GetPollResponseModel], status_code=status.HTTP_200_OK)
-async def get_poll(post_id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+async def get_poll(post_id: int, db: Session = Depends(get_db)):
 
     return await services.get_poll(post_id, db)
 

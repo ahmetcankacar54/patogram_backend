@@ -3,6 +3,7 @@ from uuid import uuid4
 from models import Post, Image
 from models.favorite import Favorite
 from models.poll import Poll
+from models.vote import Vote
 from schemas import CreatePost, CreatePostImageModel
 from fastapi import Response, status, HTTPException, Depends
 from database.configuration import get_db
@@ -26,6 +27,21 @@ async def get_posts(id: int, db: Session = Depends(get_db)):
             p.isFavorite = False
             isFavorite.append(p)
 
+        poll_querry = db.query(Poll).filter(Poll.post_id == p.id).all()
+
+        p.polls = []
+
+        for poll in poll_querry:
+            vote_querry = db.query(Vote).filter(Vote.poll_id == poll.id, Vote.user_id ==
+                                                id, Vote.post_id == p.id, Vote.isVote == True).first()
+
+            if vote_querry:
+                poll.isChosen = True
+            if not vote_querry:
+                poll.isChosen = False
+
+            p.polls.append(poll)
+
     return isFavorite
 
 
@@ -43,6 +59,21 @@ async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
         post.isFavorite = True
     if not querry:
         post.isFavorite = False
+
+    poll_querry = db.query(Poll).filter(Poll.post_id == post.id).all()
+
+    post.polls = []
+
+    for poll in poll_querry:
+        vote_querry = db.query(Vote).filter(Vote.poll_id == poll.id, Vote.user_id ==
+                                            user_id, Vote.post_id == post.id, Vote.isVote == True).first()
+
+        if vote_querry:
+            poll.isChosen = True
+        if not vote_querry:
+            poll.isChosen = False
+
+        post.polls.append(poll)
 
     return post
 
@@ -63,7 +94,6 @@ async def create_posts(user_id: int, post: CreatePost, images: List[CreatePostIm
         poll.user_id = user_id
         poll.post_id = post_id
         poll.item = pol.item
-        poll.isChosen = pol.isChosen
         print(poll.item)
         db.add(poll)
         db.commit()

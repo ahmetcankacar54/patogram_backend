@@ -13,6 +13,7 @@ async def get_poll(post_id: int, db: Session = Depends(get_db)):
 
     for poll in polls:
         votes = db.query(Vote).filter(Vote.poll_id == poll.id).count()
+        print(type(poll.isChosen))
         poll.votes = votes
         poll_list.append(poll)
         total_votes += votes
@@ -36,7 +37,6 @@ async def add_poll(polls: PollCreate, user_id: int, post_id: int, db: Depends(ge
     poll.user_id = user_id
     poll.post_id = post_id
     poll.item = polls.item
-    poll.isChosen = polls.isChosen
     db.add(poll)
     db.commit()
     db.refresh(poll)

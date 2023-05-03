@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
-from schemas.poll import PollBase
+from schemas.poll import GetPostResponseModel
 from schemas.user import UserSchema
 from schemas.image import ImageBase
 from typing import List
@@ -31,7 +31,7 @@ class PostOut(PostBase):
     images: List[ImageBase]
     isFavorite: bool
     post_owner: UserSchema
-    polls: List[PollBase]
+    polls: List[GetPostResponseModel]
 
     class Config:
         orm_mode = True

@@ -11,7 +11,6 @@ class Poll(BaseModel):
         "posts.id", ondelete="CASCADE"), nullable=False)
     item = Column(String(length=180, collation="en_US.utf8",
                   convert_unicode=False, unicode_error=None), nullable=False)
-    isChosen = Column(Boolean, server_default='False', nullable=True)
     votes = Column(Integer, nullable=True)
     poll_owner = relationship("models.user.User")
     post = relationship("models.post.Post")
