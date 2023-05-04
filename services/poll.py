@@ -13,7 +13,6 @@ async def get_poll(post_id: int, db: Session = Depends(get_db)):
 
     for poll in polls:
         votes = db.query(Vote).filter(Vote.poll_id == poll.id).count()
-        print(type(poll.isChosen))
         poll.votes = votes
         poll_list.append(poll)
         total_votes += votes

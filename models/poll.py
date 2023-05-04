@@ -14,4 +14,7 @@ class Poll(BaseModel):
     votes = Column(Integer, nullable=True)
     poll_owner = relationship("models.user.User")
     post = relationship("models.post.Post")
-    vote = relationship("models.vote.Vote", back_populates="poll")
+    vote = relationship("models.vote.Vote", overlaps="vote",
+                        back_populates="poll")
+    isChosen = relationship(
+        "models.vote.Vote", overlaps="vote", back_populates="is_vote")

@@ -17,6 +17,7 @@ from typing import List
 async def get_posts(id: int, db: Session = Depends(get_db)):
     posts = db.query(Post).limit(10).all()
     isFavorite = []
+
     for p in posts:
         querry = db.query(Favorite).filter(Favorite.post_id == p.id,
                                            Favorite.user_id == id, Favorite.isFavorite == True).first()
@@ -26,21 +27,6 @@ async def get_posts(id: int, db: Session = Depends(get_db)):
         else:
             p.isFavorite = False
             isFavorite.append(p)
-
-        poll_querry = db.query(Poll).filter(Poll.post_id == p.id).all()
-
-        p.polls = []
-
-        for poll in poll_querry:
-            vote_querry = db.query(Vote).filter(Vote.poll_id == poll.id, Vote.user_id ==
-                                                id, Vote.post_id == p.id, Vote.isVote == True).first()
-
-            if vote_querry:
-                poll.isChosen = True
-            if not vote_querry:
-                poll.isChosen = False
-
-            p.polls.append(poll)
 
     return isFavorite
 
@@ -59,21 +45,6 @@ async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
         post.isFavorite = True
     if not querry:
         post.isFavorite = False
-
-    poll_querry = db.query(Poll).filter(Poll.post_id == post.id).all()
-
-    post.polls = []
-
-    for poll in poll_querry:
-        vote_querry = db.query(Vote).filter(Vote.poll_id == poll.id, Vote.user_id ==
-                                            user_id, Vote.post_id == post.id, Vote.isVote == True).first()
-
-        if vote_querry:
-            poll.isChosen = True
-        if not vote_querry:
-            poll.isChosen = False
-
-        post.polls.append(poll)
 
     return post
 

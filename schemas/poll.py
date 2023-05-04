@@ -1,10 +1,11 @@
-from typing import Optional
-from pydantic import BaseModel, Field, StrictBool
+from typing import List
+from pydantic import BaseModel, Field
+
+from schemas.vote import PollResponseModel
 
 
 class PollBase(BaseModel):
     id: int = Field(default=None)
-    user_id: int = Field(default=None)
     post_id: int = Field(default=None)
     item: str = Field(default=None)
 
@@ -24,14 +25,13 @@ class GetPollResponseModel(BaseModel):
     item: str = Field(default=None)
     votes: int = Field(default=None)
     percentage: float = Field(default=None)
-    isChosen: bool
 
     class Config:
         orm_mode = True
 
 
-class GetPostResponseModel(BaseModel):
-    isChosen: bool
+class GetPostResponseModel(PollBase):
+    isChosen: List[PollResponseModel]
 
     class Config:
         orm_mode = True

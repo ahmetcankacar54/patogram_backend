@@ -13,5 +13,6 @@ class Vote(BaseModel):
         "posts.id", ondelete="CASCADE"))
     isVote = Column(Boolean, server_default='False', nullable=False)
     vote_owner = relationship("models.user.User")
-    poll = relationship("models.poll.Poll")
     post = relationship("models.post.Post")
+    poll = relationship("models.poll.Poll", overlaps="isChosen")
+    is_vote = relationship("models.poll.Poll", overlaps="vote, poll")
