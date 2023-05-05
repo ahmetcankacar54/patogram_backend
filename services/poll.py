@@ -17,6 +17,7 @@ async def get_poll(post_id: int, db: Session = Depends(get_db)):
         poll_list.append(poll)
         total_votes += votes
         n = n+1
+        print(poll.isChosen)
 
     while n > -1:
         vote = poll_list[n]

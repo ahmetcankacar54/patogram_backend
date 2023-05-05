@@ -21,7 +21,7 @@ class AddVote(BaseModel):
 
 
 class PollResponseModel(BaseModel):
-    isVote: bool = Field(default=None)
+    isVote: bool = Field(default=False)
 
     class Config:
         orm_mode = True

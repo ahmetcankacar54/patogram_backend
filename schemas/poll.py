@@ -1,7 +1,7 @@
 from typing import List
 from pydantic import BaseModel, Field
 
-from schemas.vote import PollResponseModel
+from schemas.vote import PollResponseModel, Vote
 
 
 class PollBase(BaseModel):
@@ -31,7 +31,7 @@ class GetPollResponseModel(BaseModel):
 
 
 class GetPostResponseModel(PollBase):
-    isChosen: List[PollResponseModel]
+    item: str = Field(default=None)
 
     class Config:
         orm_mode = True
