@@ -20,4 +20,4 @@ app.include_router(vote.router)
 
 @app.get("/")
 def root():
-    return {"message": "Double Check for Working Correctly!"}
+    return {"message": "Patogram Project"}
