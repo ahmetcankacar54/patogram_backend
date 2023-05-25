@@ -5,6 +5,7 @@ class ImageBase(BaseModel):
     image: str = Field(default=None)
     thumbnail: str = Field(default=None)
     zoom_amount: str = Field(default=None)
+    paint_type: str = Field(default=None)
 
     class Config:
         orm_mode = True
@@ -13,6 +14,7 @@ class ImageBase(BaseModel):
 class CreatePostImageModel(BaseModel):
     image: str = Field(default=None)
     zoom_amount: str = Field(default=None)
+    paint_type: str = Field(default=None)
 
     class Config:
         orm_mode = True

@@ -8,23 +8,28 @@ class Post(BaseModel):
 
     disease_type = Column(String, nullable=False)
     tissue_sample_collection_method = Column(String, nullable=False)
-    paint_type = Column(String, nullable=False)
+    tissue_sample_collection_region = Column(String, nullable=False)
     patient_date_of_birth = Column(String, nullable=False)
     patient_gender = Column(String, nullable=False)
     patient_other_disease = Column(String, nullable=False)
+    patient_clinical_story = Column(String, nullable=False)
     clinical_diagnosis = Column(String, nullable=False)
     pathological_diagnosis = Column(String, nullable=False)
-    radiology_report = Column(String, nullable=False)
+    radiology_report = Column(String, nullable=True)
     pathologic_description = Column(String, nullable=False)
-    published = Column(Boolean, server_default='True', nullable=False)
-    owner_id = Column(Integer, ForeignKey(
-        "users.id", ondelete="CASCADE"), nullable=False)
+    published = Column(Boolean, server_default="True", nullable=False)
+    owner_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
     post_owner = relationship("models.user.User")
     images = relationship(
-        "models.image.Image", overlaps="images", back_populates="post")
+        "models.image.Image", overlaps="images", back_populates="post"
+    )
     thumbnail = relationship(
-        "models.image.Image", overlaps="images", back_populates="post_1")
+        "models.image.Image", overlaps="images", back_populates="post_1"
+    )
     comments = relationship("models.comment.Comment", back_populates="post")
     favorites = relationship("models.favorite.Favorite", back_populates="post")
     polls = relationship("models.poll.Poll", back_populates="post")
     votes = relationship("models.vote.Vote", back_populates="post")
+    follows = relationship("models.follow.Follow", back_populates="post")

@@ -8,8 +8,10 @@ class Image(BaseModel):
 
     image = Column(String, nullable=False)
     thumbnail = Column(String, nullable=False)
-    post_id = Column(Integer, ForeignKey(
-        "posts.id", ondelete="CASCADE"), nullable=False)
+    post_id = Column(
+        Integer, ForeignKey("posts.id", ondelete="CASCADE"), nullable=False
+    )
     zoom_amount = Column(String, nullable=False)
+    paint_type = Column(String, nullable=False)
     post = relationship("models.post.Post", overlaps="thumbnail")
     post_1 = relationship("models.post.Post", overlaps="images,post")

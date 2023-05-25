@@ -2,8 +2,8 @@ from uuid import uuid4
 
 from models import Post, Image
 from models.favorite import Favorite
+from models.follow import Follow
 from models.poll import Poll
-from models.vote import Vote
 from schemas import CreatePost, CreatePostImageModel
 from fastapi import Response, status, HTTPException, Depends
 from database.configuration import get_db
@@ -16,19 +16,38 @@ from typing import List
 
 async def get_posts(id: int, db: Session = Depends(get_db)):
     posts = db.query(Post).limit(10).all()
-    isFavorite = []
+    post_list = []
 
     for p in posts:
-        querry = db.query(Favorite).filter(Favorite.post_id == p.id,
-                                           Favorite.user_id == id, Favorite.isFavorite == True).first()
-        if querry:
+        favorite_querry = (
+            db.query(Favorite)
+            .filter(
+                Favorite.post_id == p.id,
+                Favorite.user_id == id,
+                Favorite.isFavorite == True,
+            )
+            .first()
+        )
+        if favorite_querry:
             p.isFavorite = True
-            isFavorite.append(p)
         else:
             p.isFavorite = False
-            isFavorite.append(p)
 
-    return isFavorite
+        follow_querry = (
+            db.query(Follow)
+            .filter(
+                Follow.post_id == p.id, Follow.user_id == id, Follow.isFollow == True
+            )
+            .first()
+        )
+        if follow_querry:
+            p.isFollow = True
+            post_list.append(p)
+        else:
+            p.isFollow = False
+            post_list.append(p)
+
+    return post_list
 
 
 async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
@@ -36,21 +55,48 @@ async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
 
     if not post:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!")
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!"
+        )
 
-    querry = db.query(Favorite).filter(Favorite.post_id == post.id,
-                                       Favorite.user_id == user_id, Favorite.isFavorite == True).first()
+    querry = (
+        db.query(Favorite)
+        .filter(
+            Favorite.post_id == post.id,
+            Favorite.user_id == user_id,
+            Favorite.isFavorite == True,
+        )
+        .first()
+    )
 
     if querry:
         post.isFavorite = True
     if not querry:
         post.isFavorite = False
 
+    follow_querry = (
+        db.query(Follow)
+        .filter(
+            Follow.post_id == post.id,
+            Follow.user_id == user_id,
+            Follow.isFollow == True,
+        )
+        .first()
+    )
+    if follow_querry:
+        post.isFollow = True
+    if not follow_querry:
+        post.isFollow = False
+
     return post
 
 
-async def create_posts(user_id: int, post: CreatePost, images: List[CreatePostImageModel], polls: List[PollCreate], db: Depends(get_db)):
-
+async def create_posts(
+    user_id: int,
+    post: CreatePost,
+    images: List[CreatePostImageModel],
+    polls: List[PollCreate],
+    db: Depends(get_db),
+):
     new_post = Post(**post.dict())
     new_post.owner_id = user_id
 
@@ -71,27 +117,28 @@ async def create_posts(user_id: int, post: CreatePost, images: List[CreatePostIm
         db.refresh(poll)
 
     for im in images:
-
         try:
             newImage = Image(**im.dict())
             _image, thmbnail = convert_to_file(im.image)
             unique_id = str(uuid4().hex)
-            file_name = f"{user_id}"+f"/{post_id}"+f"/{unique_id}"+".jpg"
-            thmb_name = f"{user_id}"+f"/{post_id}" + \
-                "/thumbnail"+f"/{unique_id}"+".jpg"
+            file_name = f"{user_id}" + f"/{post_id}" + f"/{unique_id}" + ".jpg"
+            thmb_name = (
+                f"{user_id}" + f"/{post_id}" + "/thumbnail" + f"/{unique_id}" + ".jpg"
+            )
             consts.bucket.put_object(Key=thmb_name, Body=thmbnail)
             consts.bucket.put_object(Key=file_name, Body=_image)
-            thumbnail = f"https://patogram-s3.s3.amazonaws.com/"+f"{thmb_name}"
-            image_url = f"https://patogram-s3.s3.amazonaws.com/"+f"{file_name}"
+            thumbnail = f"https://patogram-s3.s3.amazonaws.com/" + f"{thmb_name}"
+            image_url = f"https://patogram-s3.s3.amazonaws.com/" + f"{file_name}"
             newImage.thumbnail = thumbnail
             newImage.image = image_url
             newImage.post_id = post_id
             newImage.zoom_amount = im.zoom_amount
+            newImage.paint_type = im.paint_type
             db.add(newImage)
             db.commit()
             db.refresh(newImage)
         except Exception:
-            raise HTTPException(status_code=500, detail='Something went wrong')
+            raise HTTPException(status_code=500, detail="Something went wrong")
         # return {"message": "Successfuly uploaded"}
 
     return new_post
@@ -104,11 +151,14 @@ async def delete_post(user_id: int, id: int, db: Session = Depends(get_db)):
 
     if post == None:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!")
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!"
+        )
 
     if post.owner_id != user_id:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                            detail=f"Post does not belong current user!")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Post does not belong current user!",
+        )
 
     post_querry.delete(synchronize_session=False)
     db.commit()
@@ -116,18 +166,23 @@ async def delete_post(user_id: int, id: int, db: Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-async def update_post(user_id: int, id: int, updated_post: CreatePost, db: Session = Depends(get_db)):
+async def update_post(
+    user_id: int, id: int, updated_post: CreatePost, db: Session = Depends(get_db)
+):
     post_querry = db.query(Post).filter(Post.id == id)
     post = post_querry.first()
     user_id = int(user_id)
 
     if post == None:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!")
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!"
+        )
 
     if post.owner_id != user_id:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                            detail=f"Post does not belong current user!")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Post does not belong current user!",
+        )
 
     post_querry.update(updated_post.dict(), synchronize_session=False)
     db.commit()
