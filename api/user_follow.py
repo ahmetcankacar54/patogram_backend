@@ -11,14 +11,16 @@ router = APIRouter(prefix="/api/follows", tags=["User Follow"])
 
 
 @router.get("/get", status_code=status.HTTP_200_OK, response_model=List[PostOut])
-async def get_follow_cases(db: Session = Depends(get_db), current_user: int = 3):
-    return await services.get_follow_cases(current_user, db)
+async def get_follow_cases(
+    db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)
+):
+    return await services.get_follow_cases(current_user.id, db)
 
 
 @router.post("/set", status_code=status.HTTP_200_OK)
 async def set_follow(
     follow: SetFollowsBase,
     db: Session = Depends(get_db),
-    current_user: int = 3,
+    current_user: int = Depends(oauth2.get_current_user),
 ):
-    return await services.set_follow(follow, current_user, db)
+    return await services.set_follow(follow, current_user.id, db)
