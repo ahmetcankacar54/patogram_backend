@@ -2,7 +2,7 @@ from uuid import uuid4
 
 from models import Post, Image
 from models.favorite import Favorite
-from models.follow import Follow
+from models.case_follow import Follow
 from models.poll import Poll
 from schemas import CreatePost, CreatePostImageModel
 from fastapi import Response, status, HTTPException, Depends
@@ -15,7 +15,7 @@ from typing import List
 
 
 async def get_posts(id: int, db: Session = Depends(get_db)):
-    posts = db.query(Post).limit(10).all()
+    posts = db.query(Post).all()
     post_list = []
 
     for p in posts:

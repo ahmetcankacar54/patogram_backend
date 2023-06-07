@@ -6,4 +6,5 @@ from .comment import *
 from .favorite import *
 from .vote import *
 from .poll import *
-from .follow import *
+from .case_follow import *
+from .user_follow import *

@@ -7,4 +7,5 @@ from .image import *
 from .favorite import *
 from .poll import *
 from .vote import *
-from .follow import *
+from .case_follow import *
+from .user_follow import *

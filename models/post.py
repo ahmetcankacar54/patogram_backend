@@ -32,4 +32,4 @@ class Post(BaseModel):
     favorites = relationship("models.favorite.Favorite", back_populates="post")
     polls = relationship("models.poll.Poll", back_populates="post")
     votes = relationship("models.vote.Vote", back_populates="post")
-    follows = relationship("models.follow.Follow", back_populates="post")
+    follows = relationship("models.case_follow.Follow", back_populates="post")
