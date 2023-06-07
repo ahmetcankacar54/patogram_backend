@@ -3,7 +3,7 @@ from models import BaseModel
 from sqlalchemy.orm import relationship
 
 
-class Follow(BaseModel):
+class UserFollow(BaseModel):
     __tablename__ = "user_follows"
 
     user_id = Column(

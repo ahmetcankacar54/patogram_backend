@@ -18,4 +18,4 @@ class User(BaseModel):
     polls = relationship("models.poll.Poll", back_populates="poll_owner")
     votes = relationship("models.vote.Vote", back_populates="vote_owner")
     follows = relationship("models.case_follow.Follow", back_populates="user")
-    user_follow = relationship("models.user_follow.Follow", back_populates="userId")
+    user_follow = relationship("models.user_follow.UserFollow", back_populates="userId")
