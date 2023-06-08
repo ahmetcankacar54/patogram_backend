@@ -29,6 +29,8 @@ async def get_profile(id: int, currentUser: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found!"
         )
 
+    user.password = ""
+
     return user
 
 
@@ -59,4 +61,4 @@ async def update_profile(
     user_query.update(updated_user.dict(), synchronize_session=False)
     db.commit()
 
-    return user_query.first()
+    return updated_user

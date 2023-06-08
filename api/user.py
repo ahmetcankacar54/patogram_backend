@@ -19,11 +19,10 @@ async def get_profile(
     return await services.get_profile(id, current_user.id, db)
 
 
-@router.put("/update/{id}", response_model=UpdateUserSchema)
+@router.put("/update", response_model=UpdateUserSchema)
 async def update_profile(
-    id: int,
     updated_user: UpdateUserSchema,
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
 ):
-    return await services.update_profile(id, updated_user, db)
+    return await services.update_profile(current_user.id, updated_user, db)
