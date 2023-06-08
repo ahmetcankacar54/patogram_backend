@@ -18,7 +18,7 @@ async def get_follow_cases(
 
 
 @router.post("/set", status_code=status.HTTP_200_OK)
-async def set_follow(
+async def set_user_follow(
     follow: SetFollowsBase,
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),

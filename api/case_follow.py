@@ -10,7 +10,7 @@ router = APIRouter(prefix="/api/follow", tags=["Case Follow"])
 
 
 @router.post("/set", status_code=status.HTTP_200_OK)
-async def set_follow(
+async def set_case_follow(
     follow: SetFollowBase,
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
