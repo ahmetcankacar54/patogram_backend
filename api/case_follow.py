@@ -15,4 +15,4 @@ async def set_follow(
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
 ):
-    return await services.set_follow(follow, current_user.id, db)
+    return await services.SetCaseFollow(follow, current_user.id, db)

@@ -9,7 +9,7 @@ from models.user import User
 from schemas.user_follow import SetFollowsBase
 
 
-async def get_follows_cases(current_user: int, db: Session = Depends(get_db)):
+async def GetFollowsCases(current_user: int, db: Session = Depends(get_db)):
     user_query = db.query(UserFollow).filter(UserFollow.user_id == current_user).all()
     postList = []
     for i in user_query:
@@ -48,7 +48,7 @@ async def get_follows_cases(current_user: int, db: Session = Depends(get_db)):
     return postList
 
 
-async def set_follow(
+async def SetUserFollow(
     follow: SetFollowsBase, current_user: int, db: Session = Depends(get_db)
 ):
     follow_request = SetFollowsBase(**follow.dict())

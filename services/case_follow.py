@@ -6,7 +6,7 @@ from models.post import Post
 from schemas.case_follow import FollowBase, SetFollowBase
 
 
-async def set_follow(
+async def SetCaseFollow(
     follow: SetFollowBase, current_user: int, db: Session = Depends(get_db)
 ):
     follow_request = FollowBase(**follow.dict())
