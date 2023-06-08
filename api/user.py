@@ -3,7 +3,7 @@ from database.configuration import get_db
 from sqlalchemy.orm import Session
 from typing import List
 from schemas.user import ProfileOut
-from schemas.user import UserSchema, UpdateUserSchema
+from schemas.user import UpdateUserSchema
 from security import oauth2
 import services
 
@@ -19,7 +19,7 @@ async def get_profile(
     return await services.get_profile(id, current_user.id, db)
 
 
-@router.put("/update/{id}", response_model=UserSchema)
+@router.put("/update/{id}", response_model=UpdateUserSchema)
 async def update_profile(
     id: int,
     updated_user: UpdateUserSchema,

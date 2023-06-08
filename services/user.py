@@ -21,10 +21,8 @@ async def get_profile(id: int, currentUser: int, db: Session = Depends(get_db)):
 
     if isFollowRequest:
         user.isFollow = True
-        print("Breakpoint 1")
     else:
         user.isFollow = False
-        print("Breakpoint 2")
 
     if not user:
         raise HTTPException(
