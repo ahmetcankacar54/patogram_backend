@@ -9,9 +9,22 @@ from utils import Constants as consts
 from utils.converting import convert_to_file
 
 
-async def get_profile(id: int, db: Session = Depends(get_db)):
+async def get_profile(id: int, currentUser: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == id).first()
     user.followers = db.query(UserFollow).filter(UserFollow.follows_id == id).count()
+    isFollowRequest = (
+        db.query(UserFollow)
+        .filter(UserFollow.user_id == currentUser, UserFollow.follows_id == id)
+        .first()
+    )
+    print(isFollowRequest)
+
+    if isFollowRequest:
+        user.isFollow = True
+        print("Breakpoint 1")
+    else:
+        user.isFollow = False
+        print("Breakpoint 2")
 
     if not user:
         raise HTTPException(

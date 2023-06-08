@@ -6,10 +6,10 @@ from models.post import Post
 from models.user_follow import UserFollow
 from models.case_follow import Follow
 from models.user import User
-from schemas.user_follow import FollowsBase, SetFollowsBase
+from schemas.user_follow import SetFollowsBase
 
 
-async def get_follow_cases(current_user: int, db: Session = Depends(get_db)):
+async def get_follows_cases(current_user: int, db: Session = Depends(get_db)):
     user_query = db.query(UserFollow).filter(UserFollow.user_id == current_user).all()
     postList = []
     for i in user_query:
@@ -51,7 +51,8 @@ async def get_follow_cases(current_user: int, db: Session = Depends(get_db)):
 async def set_follow(
     follow: SetFollowsBase, current_user: int, db: Session = Depends(get_db)
 ):
-    follow_request = FollowsBase(**follow.dict())
+    follow_request = SetFollowsBase(**follow.dict())
+    followersNumber: int
 
     follows = db.query(User).filter(User.id == follow_request.follows_id).first()
     if not follows:
@@ -76,4 +77,9 @@ async def set_follow(
 
         follow_querry.delete(synchronize_session=False)
         db.commit()
-    return {"message": "successfull"}
+    followersNumber = (
+        db.query(UserFollow)
+        .filter(UserFollow.follows_id == follow_request.follows_id)
+        .count()
+    )
+    return followersNumber

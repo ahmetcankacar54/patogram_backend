@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/follows", tags=["User Follow"])
 async def get_follow_cases(
     db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)
 ):
-    return await services.get_follow_cases(current_user.id, db)
+    return await services.get_follows_cases(current_user.id, db)
 
 
 @router.post("/set", status_code=status.HTTP_200_OK)
