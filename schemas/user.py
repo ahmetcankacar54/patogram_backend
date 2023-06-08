@@ -23,6 +23,7 @@ class UserSchema(BaseModel):
     email: str = Field(default=None)
     profile_image: Optional[str] = None
     user_bio: str = Field(default=None)
+    followers: int = Field(default=None)
 
     class Config:
         orm_mode = True
