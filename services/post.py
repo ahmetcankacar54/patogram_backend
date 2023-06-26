@@ -4,6 +4,7 @@ from models import Post, Image
 from models.favorite import Favorite
 from models.case_follow import Follow
 from models.poll import Poll
+from models.user_follow import UserFollow
 from schemas import CreatePost, CreatePostImageModel
 from fastapi import Response, status, HTTPException, Depends
 from database.configuration import get_db
@@ -14,80 +15,36 @@ from utils import Constants as consts
 from typing import List
 
 
-async def get_posts(id: int, db: Session = Depends(get_db)):
+async def get_posts_mainpage(id: int, db: Session = Depends(get_db)):
+    follows_querry = db.query(UserFollow).filter(UserFollow.user_id == id).all()
+
+    if not follows_querry:
+        raise HTTPException(status_code=204, detail="No Posts Yet")
+    postList = []
+
+    for ids in follows_querry:
+        oneUserPostsQuerry = (
+            db.query(Post).filter(Post.owner_id == ids.follows_id).all()
+        )
+
+        for post in oneUserPostsQuerry:
+            favoriteCheckedPost = favoriteCheck(id, post, db)
+            followFavoriteCheckedPost = followCheck(id, favoriteCheckedPost, db)
+            postList.append(followFavoriteCheckedPost)
+
+    return postList
+
+
+async def get_posts_discover(id: int, db: Session = Depends(get_db)):
     posts = db.query(Post).all()
     post_list = []
 
     for p in posts:
-        favorite_querry = (
-            db.query(Favorite)
-            .filter(
-                Favorite.post_id == p.id,
-                Favorite.user_id == id,
-                Favorite.isFavorite == True,
-            )
-            .first()
-        )
-        if favorite_querry:
-            p.isFavorite = True
-        else:
-            p.isFavorite = False
-
-        follow_querry = (
-            db.query(Follow)
-            .filter(
-                Follow.post_id == p.id, Follow.user_id == id, Follow.isFollow == True
-            )
-            .first()
-        )
-        if follow_querry:
-            p.isFollow = True
-            post_list.append(p)
-        else:
-            p.isFollow = False
-            post_list.append(p)
+        favoriteCheckedPost = favoriteCheck(id, p, db)
+        followFavoriteCheckedPost = followCheck(id, favoriteCheckedPost, db)
+        post_list.append(followFavoriteCheckedPost)
 
     return post_list
-
-
-async def get_post(id: int, user_id: int, db: Session = Depends(get_db)):
-    post = db.query(Post).filter(Post.id == id).first()
-
-    if not post:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Post not found!"
-        )
-
-    querry = (
-        db.query(Favorite)
-        .filter(
-            Favorite.post_id == post.id,
-            Favorite.user_id == user_id,
-            Favorite.isFavorite == True,
-        )
-        .first()
-    )
-
-    if querry:
-        post.isFavorite = True
-    if not querry:
-        post.isFavorite = False
-
-    follow_querry = (
-        db.query(Follow)
-        .filter(
-            Follow.post_id == post.id,
-            Follow.user_id == user_id,
-            Follow.isFollow == True,
-        )
-        .first()
-    )
-    if follow_querry:
-        post.isFollow = True
-    if not follow_querry:
-        post.isFollow = False
-
-    return post
 
 
 async def create_posts(
@@ -188,3 +145,40 @@ async def update_post(
     db.commit()
 
     return post_querry.first()
+
+
+# SOME INNER FUNCTIONS DEFINED BELOW #
+
+
+def favoriteCheck(id: int, post: Post, db: Session = Depends(get_db)):
+    favorite_querry = (
+        db.query(Favorite)
+        .filter(
+            Favorite.post_id == post.id,
+            Favorite.user_id == id,
+            Favorite.isFavorite == True,
+        )
+        .first()
+    )
+    if favorite_querry:
+        post.isFavorite = True
+    else:
+        post.isFavorite = False
+
+    return post
+
+
+def followCheck(id: int, post: Post, db: Session = Depends(get_db)):
+    follow_querry = (
+        db.query(Follow)
+        .filter(
+            Follow.post_id == post.id, Follow.user_id == id, Follow.isFollow == True
+        )
+        .first()
+    )
+    if follow_querry:
+        post.isFollow = True
+    else:
+        post.isFollow = False
+
+    return post
