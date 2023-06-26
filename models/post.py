@@ -7,16 +7,20 @@ class Post(BaseModel):
     __tablename__ = "posts"
 
     disease_type = Column(String, nullable=False)
-    tissue_sample_collection_method = Column(String, nullable=False)
-    tissue_sample_collection_region = Column(String, nullable=False)
     patient_date_of_birth = Column(String, nullable=False)
     patient_gender = Column(String, nullable=False)
     patient_other_disease = Column(String, nullable=False)
     patient_clinical_story = Column(String, nullable=False)
-    clinical_diagnosis = Column(String, nullable=False)
+    tissue_sample_collection_method = Column(String, nullable=False)
+    tissue_sample_collection_organ = Column(String, nullable=False)
+    pathologic_description = Column(String, nullable=False)
+    macroscopic_findings = Column(String, nullable=False)
+    immunohistochemical_findings = Column(String, nullable=False)
+    histochemical_findings = Column(String, nullable=False)
+    diagnosis = Column(String, nullable=False)
+    comment = Column(String, nullable=False)
     pathological_diagnosis = Column(String, nullable=False)
     radiology_report = Column(String, nullable=True)
-    pathologic_description = Column(String, nullable=False)
     published = Column(Boolean, server_default="True", nullable=False)
     owner_id = Column(
         Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
