@@ -5,13 +5,11 @@ from models.disease_name import DiseaseName
 from models.user import User
 
 
-diseaseSearchList = []
-nameSearchList = []
-
-
 async def search(keyword: str, db: Session = Depends(get_db)):
     diseaseQuerry = db.query(DiseaseName).all()
     userQuerry = db.query(User.full_name).all()
+    diseaseSearchList = []
+    nameSearchList = []
 
     for item in diseaseQuerry:
         name_tr = item.disease_tr
@@ -21,20 +19,22 @@ async def search(keyword: str, db: Session = Depends(get_db)):
 
     for item in userQuerry:
         name = item.full_name
+        # print(name)
         nameSearchList.append(name)
-    resultsList = checkKeyword(keyword)
+    resultsList = checkKeyword(keyword, diseaseSearchList, nameSearchList)
 
     return resultsList
 
 
-def checkKeyword(keyword: str):
+def checkKeyword(keyword: str, diseaseList, nameList):
     resultList = []
-    for i, words in enumerate(diseaseSearchList):
-        if keyword.lower() in diseaseSearchList[i].lower():
+    for i, words in enumerate(diseaseList):
+        if keyword.lower() in diseaseList[i].lower():
             print(words)
             resultList.append(words)
-    for i, words in enumerate(nameSearchList):
-        if keyword.lower() in nameSearchList[i].lower():
+    for i, words in enumerate(nameList):
+        print(nameList[i])
+        if keyword.lower() in nameList[i].lower():
             resultList.append(words)
 
     return resultList
