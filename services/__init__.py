@@ -8,3 +8,4 @@ from .vote import *
 from .poll import *
 from .case_follow import *
 from .user_follow import *
+from .search import *

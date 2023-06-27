@@ -17,9 +17,6 @@ from typing import List
 
 async def get_posts_mainpage(id: int, db: Session = Depends(get_db)):
     follows_querry = db.query(UserFollow).filter(UserFollow.user_id == id).all()
-
-    if not follows_querry:
-        raise HTTPException(status_code=204, detail="No Posts Yet")
     postList = []
 
     for ids in follows_querry:

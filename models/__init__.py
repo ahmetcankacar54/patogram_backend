@@ -8,3 +8,4 @@ from .favorite import *
 from .poll import *
 from .vote import *
 from .case_follow import *
+from .disease_name import *

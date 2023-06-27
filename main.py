@@ -12,6 +12,7 @@ from api import (
     poll,
     vote,
     user_follow,
+    search,
 )
 
 
@@ -29,6 +30,7 @@ app.include_router(poll.router)
 app.include_router(vote.router)
 app.include_router(case_follow.router)
 app.include_router(user_follow.router)
+app.include_router(search.router)
 
 
 @app.get("/")

@@ -9,3 +9,4 @@ from .poll import *
 from .vote import *
 from .case_follow import *
 from .user_follow import *
+from .disease import *
