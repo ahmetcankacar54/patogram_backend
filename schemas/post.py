@@ -52,3 +52,11 @@ class PostOut(PostBase):
 
     class Config:
         orm_mode = True
+
+
+class DiscoverOut(BaseModel):
+    id: int = Field(default=None)
+    images: List[ImageBase]
+
+    class Config:
+        orm_mode = True

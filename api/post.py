@@ -4,6 +4,7 @@ from database.configuration import get_db
 from sqlalchemy.orm import Session
 from typing import List
 from schemas.poll import PollCreate
+from schemas.post import DiscoverOut
 import services
 from security import oauth2
 
@@ -17,7 +18,7 @@ async def get_posts_mainpage(
     return await services.get_posts_mainpage(current_user.id, db)
 
 
-@router.get("/get/discover", response_model=List[PostOut])
+@router.get("/get/discover", response_model=List[DiscoverOut])
 async def get_posts_discover(
     db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)
 ):
