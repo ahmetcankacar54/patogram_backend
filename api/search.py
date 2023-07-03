@@ -10,6 +10,11 @@ import services
 router = APIRouter(prefix="/api/search", tags=["Search"])
 
 
-@router.post("/{keyword}]", status_code=status.HTTP_200_OK)
-async def search(keyword: str, db: Session = Depends(get_db)):
-    return await services.search(keyword, db)
+@router.post("/mainpage/{keyword}", status_code=status.HTTP_200_OK)
+async def searchMainpage(keyword: str, db: Session = Depends(get_db)):
+    return await services.searchMainpage(keyword, db)
+
+
+@router.post("/discover/{keyword}", status_code=status.HTTP_200_OK)
+async def searchDiscover(keyword: str, db: Session = Depends(get_db)):
+    return await services.searchDiscover(keyword, db)

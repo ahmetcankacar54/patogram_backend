@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
+from schemas.disease import MainpageDiseaseOut
 from schemas.user import UserSchema
 from schemas.image import ImageBase
 from typing import List
@@ -9,7 +10,7 @@ class PostBase(BaseModel):
     disease_type: str = Field(default=None)
     patient_date_of_birth: str = Field(default=None)
     patient_gender: str = Field(default=None)
-    patient_other_disease: str = Field(default=None)
+    patient_other_disease: MainpageDiseaseOut
     patient_clinical_story: str = Field(default=None)
     tissue_sample_collection_method: str = Field(default=None)
     tissue_sample_collection_organ: str = Field(default=None)
@@ -21,19 +22,6 @@ class PostBase(BaseModel):
     comment: str = Field(default=None)
     pathological_diagnosis: str = Field(default=None)
     radiology_report: str = Field(default=None)
-    published: bool = True
-
-    disease_type: str = Field(default=None)
-    tissue_sample_collection_method: str = Field(default=None)
-    tissue_sample_collection_region: str = Field(default=None)
-    patient_date_of_birth: str = Field(default=None)
-    patient_gender: str = Field(default=None)
-    patient_other_disease: str = Field(default=None)
-    patient_clinical_story: str = Field(default=None)
-    clinical_diagnosis: str = Field(default=None)
-    pathological_diagnosis: str = Field(default=None)
-    radiology_report: str = Field(default=None)
-    pathologic_description: str = Field(default=None)
     published: bool = True
 
 

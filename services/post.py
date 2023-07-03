@@ -65,7 +65,6 @@ async def create_posts(
         poll.user_id = user_id
         poll.post_id = post_id
         poll.item = pol.item
-        print(poll.item)
         db.add(poll)
         db.commit()
         db.refresh(poll)

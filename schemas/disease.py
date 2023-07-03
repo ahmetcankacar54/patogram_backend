@@ -8,3 +8,10 @@ class Disease(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class MainpageDiseaseOut(Disease):
+    id: int = Field(default=None)
+
+    class Config:
+        orm_mode = True
