@@ -1,3 +1,4 @@
+from itertools import chain
 from fastapi import Depends, HTTPException, status
 from requests import Session
 from database.configuration import get_db
@@ -38,8 +39,8 @@ async def searchDiscover(keyword: str, db: Session = Depends(get_db)):
 
     for item in diseaseList:
         disaseId = item.id
-        diseaseNameAndIdTr = item.id, item.disease_tr
-        diseaseNameAndIdEn = disaseId, item.disease_en
+        diseaseNameAndIdTr = {"id": disaseId, "disease_name": item.disease_tr}
+        diseaseNameAndIdEn = {"id": disaseId, "disease_name": item.disease_en}
         diseaseSearchList.append(diseaseNameAndIdTr)
         diseaseSearchList.append(diseaseNameAndIdEn)
 
@@ -48,6 +49,7 @@ async def searchDiscover(keyword: str, db: Session = Depends(get_db)):
         userName = item.full_name
         user = userId, userName
         nameSearchList.append(user)
+
     resultsList = checkKeyword(keyword, diseaseSearchList, nameSearchList)
 
     return resultsList
@@ -55,13 +57,17 @@ async def searchDiscover(keyword: str, db: Session = Depends(get_db)):
 
 def checkKeyword(keyword, diseaseList, nameList):
     resultList = []
+    finalList = []
 
     for disease in diseaseList:
-        if keyword.lower() in disease[1].lower():
+        print(disease)
+        if keyword.lower() in disease["disease_name"].lower():
             resultList.append(disease)
 
     for names in nameList:
-        if keyword.lower() in names[1].lower():
+        if keyword.lower() in disease["disease_name"].lower():
             resultList.append(names)
+
+        # tuple(items.replace("[", "{" and "]", "}"))
 
     return resultList

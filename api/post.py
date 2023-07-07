@@ -20,7 +20,8 @@ async def get_posts_mainpage(
 
 @router.get("/get/discover", response_model=List[DiscoverOut])
 async def get_posts_discover(
-    db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.get_current_user),
 ):
     return await services.get_posts_discover(current_user.id, db)
 
