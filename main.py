@@ -35,4 +35,4 @@ app.include_router(search.router)
 
 @app.get("/")
 def root():
-    return {"message": "Patogram Project"}
+    return {"message": "Patogram Project, Check For AWS"}
