@@ -7,10 +7,10 @@ from typing import List
 
 
 class PostBase(BaseModel):
-    disease_type: str = Field(default=None)
+    disease_type: MainpageDiseaseOut
     patient_date_of_birth: str = Field(default=None)
     patient_gender: str = Field(default=None)
-    patient_other_disease: MainpageDiseaseOut
+    patient_other_disease: str = Field(default=None)
     patient_clinical_story: str = Field(default=None)
     tissue_sample_collection_method: str = Field(default=None)
     tissue_sample_collection_organ: str = Field(default=None)
