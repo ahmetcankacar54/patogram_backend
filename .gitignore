@@ -5,6 +5,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 db.sqlite3
+alembic.ini
 # C extensions
 *.so
 

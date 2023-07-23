@@ -1,8 +1,9 @@
 from sqlalchemy import Column, String, Integer
 from database.configuration import Base
+from sqlalchemy.orm import relationship
 
 
-class DiseaseName(Base):
+class Disease(Base):
     __tablename__ = "diseases"
 
     id = Column(Integer, primary_key=True, index=True)

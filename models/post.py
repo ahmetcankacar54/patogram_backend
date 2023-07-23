@@ -6,7 +6,7 @@ from models import BaseModel
 class Post(BaseModel):
     __tablename__ = "posts"
 
-    disease_type = Column(String, nullable=False)
+    disease_type = Column(Integer, nullable=False)
     patient_date_of_birth = Column(String, nullable=False)
     patient_gender = Column(String, nullable=False)
     patient_other_disease = Column(String, nullable=False)
@@ -19,7 +19,6 @@ class Post(BaseModel):
     histochemical_findings = Column(String, nullable=False)
     diagnosis = Column(String, nullable=False)
     comment = Column(String, nullable=False)
-    pathological_diagnosis = Column(String, nullable=False)
     radiology_report = Column(String, nullable=True)
     published = Column(Boolean, server_default="True", nullable=False)
     owner_id = Column(

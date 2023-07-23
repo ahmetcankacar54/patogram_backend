@@ -3,7 +3,7 @@ uvicorn
 sqlalchemy==1.4
 psycopg2-binary
 python-dotenv
-pydantic[email]
+pydantic[email] == 1.10.5
 passlib[bcrypt]
 requests
 python-jose

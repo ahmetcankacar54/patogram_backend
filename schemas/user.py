@@ -9,6 +9,9 @@ class UserBase(BaseModel):
     password: str
     profile_image: Optional[str] = None
 
+    class Config:
+        orm_mode = True
+
 
 class UpdateUserSchema(BaseModel):
     full_name: str = Field(default=None)

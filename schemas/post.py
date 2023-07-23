@@ -7,7 +7,6 @@ from typing import List
 
 
 class PostBase(BaseModel):
-    disease_type: MainpageDiseaseOut
     patient_date_of_birth: str = Field(default=None)
     patient_gender: str = Field(default=None)
     patient_other_disease: str = Field(default=None)
@@ -20,16 +19,17 @@ class PostBase(BaseModel):
     histochemical_findings: str = Field(default=None)
     diagnosis: str = Field(default=None)
     comment: str = Field(default=None)
-    pathological_diagnosis: str = Field(default=None)
     radiology_report: str = Field(default=None)
     published: bool = True
 
 
 class CreatePost(PostBase):
+    disease_type: int = Field(default=None)
     pass
 
 
 class PostOut(PostBase):
+    disease_type: MainpageDiseaseOut
     id: int = Field(default=None)
     created_at: datetime = Field(default=None)
     post_owner: int = Field(default=None)

@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from models import Post, Image
+from models.disease import Disease
 from models.favorite import Favorite
 from models.case_follow import Follow
 from models.poll import Poll
@@ -25,6 +26,10 @@ async def get_posts_mainpage(id: int, db: Session = Depends(get_db)):
         )
 
         for post in oneUserPostsQuerry:
+            diseaseQuerry = (
+                db.query(Disease).filter(Disease.id == post.disease_type).first()
+            )
+            post.disease_type = diseaseQuerry
             favoriteCheckedPost = favoriteCheck(id, post, db)
             followFavoriteCheckedPost = followCheck(id, favoriteCheckedPost, db)
             postList.append(followFavoriteCheckedPost)
@@ -37,6 +42,8 @@ async def get_posts_discover(id: int, db: Session = Depends(get_db)):
     post_list = []
 
     for p in posts:
+        diseaseQuerry = db.query(Disease).filter(Disease.id == p.disease_type).first()
+        p.disease_type = diseaseQuerry
         favoriteCheckedPost = favoriteCheck(id, p, db)
         followFavoriteCheckedPost = followCheck(id, favoriteCheckedPost, db)
         post_list.append(followFavoriteCheckedPost)

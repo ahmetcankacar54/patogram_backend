@@ -1,7 +1,8 @@
 from fastapi import Depends
 from requests import Session
 from database.configuration import get_db
-from models.disease_name import DiseaseName
+from models.disease import Disease
+from models.post import Post
 from models.user import User
 from models.user_follow import UserFollow
 from services.post import get_posts_mainpage
@@ -14,9 +15,15 @@ async def searchMainpage(keyword: str, userId: int, db: Session = Depends(get_db
     postList = await get_posts_mainpage(userId, db)
 
     for item in postList:
-        disaseId = item.id
-        diseaseNameAndIdTr = {"id": disaseId, "disease_name": item.disease_tr}
-        diseaseNameAndIdEn = {"id": disaseId, "disease_name": item.disease_en}
+        diseaseId = item.disease_type.id
+        diseaseNameAndIdTr = {
+            "id": diseaseId,
+            "disease_name": item.disease_type.disease_tr,
+        }
+        diseaseNameAndIdEn = {
+            "id": diseaseId,
+            "disease_name": item.disease_type.disease_en,
+        }
         diseaseSearchList.append(diseaseNameAndIdTr)
         diseaseSearchList.append(diseaseNameAndIdEn)
 
@@ -33,21 +40,31 @@ async def searchMainpage(keyword: str, userId: int, db: Session = Depends(get_db
 
 
 async def searchDiscover(keyword: str, db: Session = Depends(get_db)):
-    diseaseQuerry = db.query(DiseaseName).all()
+    postQuerry = db.query(Post.disease_type).all()
     userQuerry = db.query(User.id, User.full_name).all()
     diseaseList = []
     userList = []
-    diseaseList = diseaseQuerry
+    diseaseList = postQuerry
     userList = userQuerry
     diseaseSearchList = []
     nameSearchList = []
 
     for item in diseaseList:
-        disaseId = item.id
-        diseaseNameAndIdTr = {"id": disaseId, "disease_name": item.disease_tr}
-        diseaseNameAndIdEn = {"id": disaseId, "disease_name": item.disease_en}
-        diseaseSearchList.append(diseaseNameAndIdTr)
-        diseaseSearchList.append(diseaseNameAndIdEn)
+        diseaseId = item[0]
+        diseaseQuerry = db.query(Disease).filter(Disease.id == diseaseId).first()
+        if diseaseQuerry:
+            diseaseNameAndIdTr = {
+                "id": diseaseId,
+                "disease_name": diseaseQuerry.disease_tr,
+            }
+            diseaseNameAndIdEn = {
+                "id": diseaseId,
+                "disease_name": diseaseQuerry.disease_en,
+            }
+            diseaseSearchList.append(diseaseNameAndIdTr)
+            diseaseSearchList.append(diseaseNameAndIdEn)
+        else:
+            pass
 
     for item in userList:
         userId = item.id
@@ -61,15 +78,15 @@ async def searchDiscover(keyword: str, db: Session = Depends(get_db)):
 
 
 async def searchOnlyDisease(keyword: str, db: Session = Depends(get_db)):
-    diseaseQuerry = db.query(DiseaseName).all()
+    diseaseQuerry = db.query(Disease).all()
     diseaseList = []
     diseaseList = diseaseQuerry
     diseaseSearchList = []
 
     for item in diseaseList:
-        disaseId = item.id
-        diseaseNameAndIdTr = {"id": disaseId, "disease_name": item.disease_tr}
-        diseaseNameAndIdEn = {"id": disaseId, "disease_name": item.disease_en}
+        diseaseId = item.id
+        diseaseNameAndIdTr = {"id": diseaseId, "disease_name": item.disease_tr}
+        diseaseNameAndIdEn = {"id": diseaseId, "disease_name": item.disease_en}
         diseaseSearchList.append(diseaseNameAndIdTr)
         diseaseSearchList.append(diseaseNameAndIdEn)
 
