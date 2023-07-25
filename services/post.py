@@ -51,6 +51,17 @@ async def get_posts_discover(id: int, db: Session = Depends(get_db)):
     return post_list
 
 
+async def get_post(id: int, current_user: int, db: Depends(get_db)):
+    post = db.query(Post).filter(Post.id == id).first()
+    if post:
+        favoriteCheckedPost = favoriteCheck(current_user, post, db)
+        followFavoriteCheckedPost = followCheck(current_user, favoriteCheckedPost, db)
+    else:
+        raise HTTPException(status_code=204, detail="No Content!")
+
+    return followFavoriteCheckedPost
+
+
 async def create_posts(
     user_id: int,
     post: CreatePost,
