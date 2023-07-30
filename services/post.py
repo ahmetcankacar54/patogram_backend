@@ -6,11 +6,12 @@ from models.favorite import Favorite
 from models.case_follow import Follow
 from models.poll import Poll
 from models.user_follow import UserFollow
-from schemas import CreatePost, CreatePostImageModel
+from schemas import CreatePostImageModel
 from fastapi import Response, status, HTTPException, Depends
 from database.configuration import get_db
 from sqlalchemy.orm import Session
 from schemas.poll import PollCreate
+from schemas.post import CreatePost, PostBase
 from utils import convert_to_file
 from utils import Constants as consts
 from typing import List
@@ -42,8 +43,6 @@ async def get_posts_discover(id: int, db: Session = Depends(get_db)):
     post_list = []
 
     for p in posts:
-        diseaseQuerry = db.query(Disease).filter(Disease.id == p.disease_type).first()
-        p.disease_type = diseaseQuerry
         favoriteCheckedPost = favoriteCheck(id, p, db)
         followFavoriteCheckedPost = followCheck(id, favoriteCheckedPost, db)
         post_list.append(followFavoriteCheckedPost)
@@ -53,6 +52,7 @@ async def get_posts_discover(id: int, db: Session = Depends(get_db)):
 
 async def get_post(id: int, current_user: int, db: Depends(get_db)):
     post = db.query(Post).filter(Post.id == id).first()
+
     if post:
         favoriteCheckedPost = favoriteCheck(current_user, post, db)
         followFavoriteCheckedPost = followCheck(current_user, favoriteCheckedPost, db)

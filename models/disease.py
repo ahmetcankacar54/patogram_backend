@@ -9,3 +9,4 @@ class Disease(Base):
     id = Column(Integer, primary_key=True, index=True)
     disease_en = Column(String, nullable=False)
     disease_tr = Column(String, nullable=False)
+    post = relationship("models.post.Post", back_populates="post_disease")

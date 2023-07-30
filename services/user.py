@@ -11,6 +11,12 @@ from utils.converting import convert_to_file
 
 async def get_profile(id: int, currentUser: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == id).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found!"
+        )
+
     user.followers = db.query(UserFollow).filter(UserFollow.follows_id == id).count()
     isFollowRequest = (
         db.query(UserFollow)
@@ -23,11 +29,6 @@ async def get_profile(id: int, currentUser: int, db: Session = Depends(get_db)):
         user.isFollow = True
     else:
         user.isFollow = False
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found!"
-        )
 
     user.password = ""
 

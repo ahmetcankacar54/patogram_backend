@@ -6,7 +6,9 @@ from models import BaseModel
 class Post(BaseModel):
     __tablename__ = "posts"
 
-    disease_type = Column(Integer, nullable=False)
+    disease_type = Column(
+        Integer, ForeignKey("diseases.id", ondelete="CASCADE"), nullable=False
+    )
     patient_date_of_birth = Column(String, nullable=False)
     patient_gender = Column(String, nullable=False)
     patient_other_disease = Column(String, nullable=False)
@@ -24,6 +26,7 @@ class Post(BaseModel):
     owner_id = Column(
         Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
+    post_disease = relationship("models.disease.Disease")
     post_owner = relationship("models.user.User")
     images = relationship(
         "models.image.Image", overlaps="images", back_populates="post"

@@ -27,9 +27,9 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
 
 
 async def signup(user: SignUpRequest, db: Session = Depends(get_db)):
-    isExist = db.query(User).filter(User.email == user.email)
+    isExist = db.query(User).filter(User.email == user.email).first()
 
-    if isExist.first():
+    if isExist:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"An account with email already exist.",

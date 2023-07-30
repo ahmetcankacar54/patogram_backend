@@ -1,5 +1,4 @@
-from pydantic import BaseModel, Field, conint
-from database.configuration import Base
+from pydantic import BaseModel, Field
 
 
 class Disease(BaseModel):
@@ -10,8 +9,10 @@ class Disease(BaseModel):
         orm_mode = True
 
 
-class MainpageDiseaseOut(Disease):
+class DiseaseOut(BaseModel):
     id: int = Field(default=None)
+    disease_en: str = Field(default=None)
+    disease_tr: str = Field(default=None)
 
     class Config:
         orm_mode = True

@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
-from schemas.disease import MainpageDiseaseOut
+from models.disease import Disease
+from schemas.disease import DiseaseOut
 from schemas.user import UserSchema
 from schemas.image import ImageBase
 from typing import List
@@ -29,14 +30,13 @@ class CreatePost(PostBase):
 
 
 class PostOut(PostBase):
-    disease_type: MainpageDiseaseOut
     id: int = Field(default=None)
     created_at: datetime = Field(default=None)
-    post_owner: int = Field(default=None)
     images: List[ImageBase]
     isFavorite: bool
     post_owner: UserSchema
     isFollow: bool
+    post_disease: DiseaseOut
 
     class Config:
         orm_mode = True
