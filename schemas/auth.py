@@ -27,6 +27,10 @@ class SignUpRequest(UserBase):
         orm_mode = True
 
 
+
+        
+
+
 class SignupResponse(BaseModel):
     user: UserSchema = Field(default=None)
     token: str = Field(default=None)
